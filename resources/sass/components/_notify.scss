@@ -1,0 +1,23 @@
+.n-light {
+    z-index: 999999 !important;
+    bottom: 0;
+    right: 0;
+    background: white;
+    width: 100%;
+    padding: 24px;
+    position: fixed;
+    box-shadow: 0 0 10px 0px #00000066;
+    border-radius: 10px;
+    .notification-content {
+        margin-top: 1rem;
+        font-weight: 400;
+    }
+}
+@media all and(min-width: 600px) {
+    .n-light  {
+        bottom: 1rem;
+        right: 1rem;
+        width: calc(100% - 2rem);
+        max-width: 475px;
+    }
+}

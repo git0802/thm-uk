@@ -1,0 +1,58 @@
+body {
+    scroll-behavior: smooth;
+}
+
+
+/** ----- qty-button - start **/
+
+.qty {
+    display: flex;
+    align-items: center;
+}
+
+.qty-btn {
+    width: 22px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    color: #000;
+    transition: 0.2s linear;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+}
+
+.qty-btn[disable] {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.qty-btn span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+@media screen and (min-width: 992px) {
+    .qty-btn:hover {
+        color: var(--purple);
+    }
+}
+
+.qty-number {
+    font-size: 14px;
+    height: 18px;
+    width: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    cursor: default;
+    transition: 0.2s linear;
+}
+
+/** ---- qty-button - end **/

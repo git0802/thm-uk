@@ -1,0 +1,1 @@
+(function(d){	const l = d['en'] = d['en'] || {};	l.dictionary=Object.assign(		l.dictionary||{},		{"Upload in progress":"Upload in progress"}	);})(window.CKEDITOR_TRANSLATIONS||(window.CKEDITOR_TRANSLATIONS={}));

@@ -1,0 +1,58 @@
+.button-select-day.lack:before {
+    content: '';
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 86 80' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cellipse cx='43' cy='40' rx='43' ry='40' fill='%23919191'/%3E%3Cpath d='M32 37.5C31.7188 42.3701 33.0002 54 35 52C36.9998 50 57.5 29 57.5 29' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+    background-repeat: no-repeat;
+    //background: #919191;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    left: 50%;
+    top: -10px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+}
+
+.button-select-day.ok:before {
+    content: '';
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 86 80' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cellipse cx='43' cy='40' rx='43' ry='40' fill='%23A040F5'/%3E%3Cpath d='M32 37.5C31.7188 42.3701 33.0002 54 35 52C36.9998 50 57.5 29 57.5 29' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+    background-repeat: no-repeat;
+    //background: #b27dff;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    left: 50%;
+    top: -10px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+}
+
+.button-select-day.overdo:before {
+    //content: url("data:image/svg+xml,%3Csvg width='11' height='15' viewBox='0 0 31 35' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 4C13.9299 14.3397 18.784 20.1781 26 31M27 4.5C17.5724 16.2883 12.3989 22.5372 4 31' stroke='white' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E%0A");
+    //background: #e92264;
+    content: '';
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 86 80' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cellipse cx='43' cy='40' rx='43' ry='40' fill='%23E92264'/%3E%3Cpath d='M33 26C41.9299 36.3397 46.784 42.1781 54 53M55 26.5C45.5724 38.2883 40.3989 44.5372 32 53' stroke='white' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E%0A");
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    left: 50%;
+    top: -10px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+}
+
+.meal-planner__select-day {
+    margin-top: 35px;
+}

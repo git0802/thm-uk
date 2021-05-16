@@ -1,0 +1,87 @@
+@mixin small-font {
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 151.19%;
+}
+
+@mixin base-font {
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 151.19%;
+}
+
+@mixin large-font {
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 151.19%;
+}
+
+@mixin head-14-font {
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 138.18%;
+}
+
+@mixin head-16-font {
+    font-weight: 800;
+    font-size: 16px;
+    line-height: 138.18%;
+}
+
+@mixin head-18-font {
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 138.18%;
+    color: var(--black);
+}
+
+@mixin head-font {
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 132.19%;
+    color: var(--black);
+}
+
+@mixin head-20-font {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 100%;
+}
+
+@mixin head-24-font {
+    font-weight: 800;
+    font-size: 24px;
+    line-height: 138.18%;
+    color: var(--black);
+}
+
+@mixin title-font {
+    font-weight: 800;
+    font-size: 36px;
+    line-height: 50px;
+    color: var(--black);
+}
+
+@mixin button-text-font {
+    font-weight: 800;
+    font-size: 17.4545px;
+    font-style: normal;
+    line-height: 132.19%;
+    color: var(--white);
+}
+
+@mixin button-food-action {
+    color: var(--primary);
+    font-size: 14px;
+    line-height: 138.18%;
+    font-weight: 300;
+}
+
+@mixin anchor-font {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 100%;
+    color: var(--grey-6);
+}
+
+
