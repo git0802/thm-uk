@@ -45,7 +45,7 @@ class SendEmailToSupport extends Notification
         $fullName = $this->fields['first_name'] . " " . $this->fields['last_name'];
 
         return (new MailMessage)
-            ->from($this->fields['email'], $fullName)
+            ->replyTo($this->fields['email'], $fullName)
             ->subject("New support request from {$fullName}.")
             ->greeting('New support request from the site.')
             ->line('Name: ' . $fullName)

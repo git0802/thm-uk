@@ -145,7 +145,6 @@ const actions = {
         context.commit('setIsBusy', false);
     },
     register: (context, payload) => {
-        console.log(context, payload)
         let action = context.state.verification ? '/api/register' : '/api/check-cart',
             finaly = true;
 

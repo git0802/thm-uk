@@ -28,7 +28,7 @@ class ActivateController extends Controller
 
         $user->activated_at = now();
         $user->save();
-        
+
         $MailChimp = new MailChimp(env('MAILCHIMP_API'));
         $result = $MailChimp->get('lists');
 
@@ -43,7 +43,7 @@ class ActivateController extends Controller
                 'LNAME' =>  $user->last_name
             ]
         ]);
-        
+
         return response([
             'success' => true,
             'message' => 'Your account successfully activated! You can login to your account now.'

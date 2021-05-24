@@ -46,10 +46,11 @@ class NotifyPaid extends Command
     {
         $notify = $this->subscription->getData('notify');
         $check  = now()->addDays($notify['expire_days']);
-        $query  = Subscription::where([
-                        ['paid', '!=', 0],
-                        ['payment_method', '']
-                    ])
+        $query  = Subscription::where('paid', '!=', 0)
+                   ->where(function($query) {
+                        $query->where('payment_method', '')
+                            ->orWhereNull('payment_method');
+                    })
                     ->whereDate('ending', $check);
 
         $query->each(function ($item) {

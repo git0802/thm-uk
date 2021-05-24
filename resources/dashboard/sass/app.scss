@@ -548,10 +548,9 @@ label.food-block__checked {
 }
 span.food-block__name {
     line-height: 1;
-    //height: 32px;
     overflow: hidden;
     font-size: 16px;
-    //-webkit-line-clamp: 2;
+    -webkit-line-clamp: 2;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     margin-bottom: 6px;

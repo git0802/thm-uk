@@ -34,6 +34,7 @@ class Install extends Command
     public function handle()
     {
         $this->info("Creating admin...");
+
         $admin = User::make([
             'name' => 'Admin',
             'last_name' => 'Admin',
@@ -43,7 +44,7 @@ class Install extends Command
             'phone' => '12345678901',
             'email' => env("ADMIN_EMAIL"),
             'is_spam_wanted' => true,
-            'age' => 21,
+            'age' => 25,
             'password' => Hash::make('password'),
         ]);
         $admin->is_admin = true;

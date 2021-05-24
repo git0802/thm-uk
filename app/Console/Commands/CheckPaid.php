@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Subscription;
 use Stripe\Exception\ApiErrorException;
@@ -53,7 +54,7 @@ class CheckPaid extends Command
 
                         // $this->info("canceled time : ".$canceledTime->toDateTimeString());
 
-//                        $subscription->ending = $canceledTime;
+                        // $subscription->ending = $canceledTime;
 
                         $subscription->payment_method  = null;
                         $subscription->subscription_id = null;
