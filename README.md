@@ -103,3 +103,10 @@ This two lines need to be presented at nginx config for serving compressed asset
 gzip_static on;
 gunzip on;
 ```
+
+## CRON Setup
+
+```
+# create the following cron setup
+* * * * * sudo -u www-data /usr/bin/php /var/www/thehotmeal.com/artisan schedule:run >> /dev/null 2>&1
+```
