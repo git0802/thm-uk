@@ -50,19 +50,20 @@ const actions = {
         commit('adminUi/setIsLoading', false, {root: true})
 
     },
-    async signIn({ commit }, { http, token, user }) {
+    async signIn({ dispatch, commit }, { http, token, user }) {
         Cookies.set('token', token, { expires: 30 });
         http.defaults.headers.common['Authorization'] = "Bearer " + token;
         await commit('login', token);
         await commit('user', user);
+        await dispatch('checkSubscriptionStatus');
         return true;
     },
-    async refreshSession({ commit }, { http, token, user }) {
+    async refreshSession({ dispatch, commit }, { http, token, user }) {
         http.defaults.headers.common['Authorization'] = "Bearer " + token;
         await commit('login', token);
         await commit('user', user);
-        let data = await axios.get(`/api/subscription/status`);
-        await commit('setSubscriptionStatus', data.data);
+        await dispatch('checkSubscriptionStatus');
+
     },
     async signOut(context, http) {
         if(state.authenticated) {

@@ -6,7 +6,6 @@ namespace App\Helpers;
 
 use App\Extra;
 use App\Planner;
-use App\Helpers\LocationHelper;
 
 class StatsStaticHelper
 {
@@ -19,20 +18,18 @@ class StatsStaticHelper
      */
     public static function extractPlannerData(Planner $planner)
     {
-        $dateFormat     = LocationHelper::getDateFormat();
-        $dateFormatFull = LocationHelper::getDateFormatFull();
-
+        $dateFormat = config('thehotmeal.date_format_full');
         $result = [
-            'id'     => $planner->id,
-            'plan'   => 0,
-            'fact'   => 0,
-            'spent'  => 0,
-            'goal'   => $planner->goal,
+            'id' => $planner->id,
+            'plan' => 0,
+            'fact' => 0,
+            'spent' => 0,
+            'goal' => $planner->goal,
             'netCal' => number_format($planner->calories_goal),
             'weight' => $planner->weight,
-            'date'   => $planner->ends->format($dateFormatFull),
-            'start'  => $planner->starts->format($dateFormat),
-            'end'    => $planner->ends->format($dateFormat),
+            'date' => $planner->ends->format($dateFormat),
+            'start' => $planner->starts->format($dateFormat),
+            'end' => $planner->ends->format($dateFormat),
         ];
 
 

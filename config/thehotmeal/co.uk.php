@@ -8,4 +8,5 @@ return [
     'weightSm' => 'lb',
     'dateFormat' => 'd.m.Y',
     'stripeCurrency' => 'gbp',
+    'date_format_full' => "d/m/Y",
 ];

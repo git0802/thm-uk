@@ -73,7 +73,6 @@ export default {
             const weightKG = (this.$useMetricSystem ? this.userParams.weight : this.convertToKg(this.userParams.weight));
             const heightCM = this.userParams.height;
             const age = this.userParams.age;
-
             const genderCorrectingValue = this.userParams.gender === 'Male' ? 5 : -161;
             //Mifflin-St Jeor Equation
             this.maintainCalories = Math.round((10 * weightKG + 6.25 * heightCM - 5 * age + genderCorrectingValue) * this.activityFactor);
@@ -91,16 +90,15 @@ export default {
                 });
 
                 if (index !== -1) {
-                    if (index === 0) {
+                  let goalListValues = this.$phrase.goalListValues;
+                  if (index === 0) {
                         this.initialGoal.calories = this.maintainCalories - 1000;
-                        this.initialGoal.goal = -1;
                     } else if (index === 6) {
                         this.initialGoal.calories = this.maintainCalories + 1000;
-                        this.initialGoal.goal = 1;
                     } else {
                         this.initialGoal.calories = this.maintainCalories + (this.stepCalories * (index - 3));
-                        this.initialGoal.goal = (index - 3) * 0.25;
                     }
+                    this.initialGoal.goal = goalListValues[index];
                 }
 
                 if (this.initialGoal.calories < minCalories) {

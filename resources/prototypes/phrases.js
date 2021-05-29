@@ -3,7 +3,7 @@ const phrases = {
         const appVersion = (window.laravel && window.laravel.appVersion) || 'co.uk';
         const phrase = {
             coUk: {
-                currencySm: window.laravel.currencySm,
+                currencySm: '£',
                 weightSm: 'lbs',
                 countryShortCode: 'GB',
 
@@ -23,13 +23,13 @@ const phrases = {
                     'Gain 2 lb per week'
                 ],
                 goalListValues: [
+                    -2,
                     -1,
                     -0.5,
-                    -0.25,
                     0,
-                    0.25,
                     0.5,
-                    1
+                    1,
+                    2
                 ]
             },
             com: {
@@ -53,13 +53,13 @@ const phrases = {
                     'Gain 2 lb per week'
                 ],
                 goalListValues: [
+                    -2,
                     -1,
                     -0.5,
-                    -0.25,
                     0,
-                    0.25,
                     0.5,
-                    1
+                    1,
+                    2
                 ]
             }
         };

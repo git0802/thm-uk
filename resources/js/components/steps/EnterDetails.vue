@@ -156,7 +156,7 @@
                 }
             }
         }
-        
+
         &__gender, &__weight {
             flex-basis: 50%;
             margin-right: 20px;

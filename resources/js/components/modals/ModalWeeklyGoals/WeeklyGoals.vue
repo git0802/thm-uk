@@ -111,16 +111,15 @@ export default {
             });
 
             if (index !== -1) {
-                if (index === 0) {
+              let goalListValues = this.$phrase.goalListValues;
+              if (index === 0) {
                     this.newGoal.calories = this.maintainCalories - 1000;
-                    this.newGoal.goal = -1;
                 } else if (index === 6) {
                     this.newGoal.calories = this.maintainCalories + 1000;
-                    this.newGoal.goal = 1;
                 } else {
                     this.newGoal.calories = this.maintainCalories + (this.stepCalories * (index - 3));
-                    this.newGoal.goal = (index - 3) * 0.25;
                 }
+                this.newGoal.goal = goalListValues[index];
             }
 
             if (this.newGoal.calories < minCalories) {

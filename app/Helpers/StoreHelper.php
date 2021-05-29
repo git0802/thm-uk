@@ -66,9 +66,12 @@ trait StoreHelper
     private function processStore($product, $store): void
     {
         try {
-            if ($oldProduct = Product::where('original_url', $product['original_url'])->first()) {
+            if ($oldProduct = Product::where('original_url', $product['original_url'])->where('name', $product['name'])->first()) {
                 $oldProduct->update($product);
                 $oldProduct->save();
+                if(isset($product['image'])) {
+                    ProcessImages::dispatch($oldProduct, $product['image']);
+                }
             } else {
                 $newProduct = $store->products()->create($product);
                 if(isset($product['image'])) {
@@ -133,11 +136,12 @@ trait StoreHelper
             $delimiter !== 0 ? $reader->setDelimiter($key) : null;
         }
         $reader->setHeaderOffset(0);
-        // Convent to UTF-8 if not
-        $input_bom = $reader->getInputBOM();
-        if ($input_bom === Reader::BOM_UTF16_LE || $input_bom === Reader::BOM_UTF16_BE) {
-            $reader->appendStreamFilter('convert.iconv.UTF-16/UTF-8');
-        }
+
+        //let's set the output BOM
+        $reader->setOutputBOM(Reader::BOM_UTF8);
+
+        // //let's convert the incoming data from iso-88959-15 to utf-8
+        // $reader->addStreamFilter('convert.iconv.ISO-8859-15/UTF-8');
 
         return $reader;
     }

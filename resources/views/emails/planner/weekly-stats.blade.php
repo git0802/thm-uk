@@ -56,7 +56,7 @@
                         <tr style="margin-bottom: 15px; margin-top: 15px; display: block; text-align: left;">
                             <td style="display: inline-block">
                                 <span class="two-row" style="font-weight: 600;margin-right: 10px; font-size: 21px;">Your weekly shopping:</span>
-                                <span style="color:#FF667B; font-size: 21px;white-space: nowrap;">£ {{ $stats['spent'] }} </span>
+                                <span style="color:#FF667B; font-size: 21px;white-space: nowrap;">{{ config('thehotmeal.currencySm') }}{{ $stats['spent'] }} </span>
                             </td>
                         </tr>
 
@@ -96,9 +96,9 @@
                                     @if($stats['goal'] === 0) {
                                     Maintain weight
                                     @elseif($stats['goal'] < 0)
-                                        To lose {{abs($stats['goal']) * 2}} Lb
+                                        To lose {{abs($stats['goal'])}} Lb
                                     @else
-                                        To gain {{abs($stats['goal']) * 2}} Lb
+                                        To gain {{abs($stats['goal'])}} Lb
                                     @endif
                                 </span>
 

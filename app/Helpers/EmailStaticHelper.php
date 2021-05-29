@@ -15,8 +15,14 @@ class EmailStaticHelper
     public static function sendWeeklyReminder(User $user)
     {
         $date = Carbon::parse('last week')->startOfDay();
-        $stats = StatsStaticHelper::extractPlannerData($user->planners()->where('starts', $date)->first());
-        Mail::to($user->email)->send(new WeeklyStats($user, $stats));
+
+				$latestPlanner = $user->planners()->where('starts', $date)->first();
+
+				if(isset($latestPlanner)){
+							$stats = StatsStaticHelper::extractPlannerData($latestPlanner);
+							Mail::to($user->email)->send(new WeeklyStats($user, $stats));
+				}
+
     }
 
 }

@@ -54,7 +54,7 @@ class StripeController extends Controller
 
                 break;
             default:
-                return response(null, 400);
+                return response(null, 200);
         }
 
         return response(null, 200);

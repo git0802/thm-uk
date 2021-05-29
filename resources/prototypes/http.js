@@ -36,10 +36,9 @@ const http = {
                         })
 
                         setTimeout(function() {
-                            window.blockSubscriptionNotification = false
+                         window.blockSubscriptionNotification = false
                         }, 7500)
                     }
-
                     return Promise.reject(error);
                     break
                 default:
