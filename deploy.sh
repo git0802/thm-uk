@@ -17,4 +17,5 @@ composer install --no-interaction --prefer-dist --optimize-autoloader
 
 if [ -f artisan ]; then
     php artisan migrate --force
+    php artisan queue:restart
 fi

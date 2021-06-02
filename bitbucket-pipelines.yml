@@ -20,7 +20,7 @@ pipelines:
             # - npm lint
             - npm run prod
             - npm run compress
-            - php -r "copy('.env.pipeline', '.env');"
+            - php -r "copy('.env.pipelines', '.env');"
             - php artisan migrate --force --seed
             # - php artisan install
             - php artisan serve &
@@ -33,25 +33,25 @@ pipelines:
           services:
             - mysql
       - step:
-          name: Deploy to Test
+          name: Deploy to Production
           trigger: manual
           image: atlassian/default-image:latest
-          deployment: test
+          deployment: production
           script:
             - curl -L https://github.com/a8m/envsubst/releases/download/v1.2.0/envsubst-`uname -s`-`uname -m` -o envsubst
             - chmod +x envsubst
             - mv envsubst /usr/local/bin
             - envsubst < deploy.sh > deploy-out.sh
 
-          - pipe: atlassian/ssh-run:0.3.0
-            variables:
-              SSH_USER: $DEPLOY_USER
-              SERVER: $DEPLOY_HOST
-              MODE: 'script'
-              COMMAND: 'deploy-out.sh'
-              ENV_VARS: >-
-                DEPLOY_PATH=${DEPLOY_PATH}
-          # - rsync -a public/* ${DEPLOY_USER}@$DEPLOY_HOST:${DEPLOY_PATH}/public
+            - pipe: atlassian/ssh-run:0.3.0
+              variables:
+                SSH_USER: $DEPLOY_USER
+                SERVER: $DEPLOY_HOST
+                MODE: 'script'
+                COMMAND: 'deploy-out.sh'
+                ENV_VARS: >-
+                  DEPLOY_PATH=${DEPLOY_PATH}
+            # - rsync -a public/* ${DEPLOY_USER}@$DEPLOY_HOST:${DEPLOY_PATH}/public
 
 
 definitions:
