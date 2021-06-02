@@ -1,34 +1,58 @@
 image: php:7.4.19-fpm-buster
 
 pipelines:
-  default:
-    - step:
-        caches:
-          - node
-          - composer
-        script:
-          - apt-get update && apt-get install -qy git zip curl default-mysql-client
-          - docker-php-ext-install pdo_mysql
-          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          - curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
-          - bash nodesource_setup.sh
-          - apt-get install -qy nodejs
-          - node -v
-          - composer install
-          - npm install -g npm@latest
-          - npm install
-          # - npm lint
-          - npm run prod
-          - npm run compress
-          - ln -f -s .env.pipelines .env
-          - php artisan migrate --force --seed
-          # - php artisan install
-          - php artisan serve &
-          - sleep 5
-          #- ./vendor/bin/phpunit
-          - curl -vk http://localhost:8000
-        services:
-          - mysql
+  branches:
+    master:
+      - step:
+          caches:
+            - node
+            - composer
+          script:
+            - apt-get update && apt-get install -qy git zip curl default-mysql-client
+            - docker-php-ext-install pdo_mysql
+            - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+            - curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
+            - bash nodesource_setup.sh
+            - apt-get install -qy nodejs
+            - node -v
+            - composer install
+            - npm install
+            # - npm lint
+            - npm run prod
+            - npm run compress
+            - php -r "copy('.env.pipeline', '.env');"
+            - php artisan migrate --force --seed
+            # - php artisan install
+            - php artisan serve &
+            - sleep 5
+            #- ./vendor/bin/phpunit
+            - curl -vk http://localhost:8000
+
+          artifacts:
+            - public/**
+          services:
+            - mysql
+      - step:
+          name: Deploy to Test
+          trigger: manual
+          image: atlassian/default-image:latest
+          deployment: test
+          script:
+            - curl -L https://github.com/a8m/envsubst/releases/download/v1.2.0/envsubst-`uname -s`-`uname -m` -o envsubst
+            - chmod +x envsubst
+            - mv envsubst /usr/local/bin
+            - envsubst < deploy.sh > deploy-out.sh
+
+          - pipe: atlassian/ssh-run:0.3.0
+            variables:
+              SSH_USER: $DEPLOY_USER
+              SERVER: $DEPLOY_HOST
+              MODE: 'script'
+              COMMAND: 'deploy-out.sh'
+              ENV_VARS: >-
+                DEPLOY_PATH=${DEPLOY_PATH}
+          # - rsync -a public/* ${DEPLOY_USER}@$DEPLOY_HOST:${DEPLOY_PATH}/public
+
 
 definitions:
   services:
