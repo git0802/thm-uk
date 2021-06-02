@@ -451,10 +451,10 @@ export default {
             if (goal === 0) {
                 return 'Maintain'
             } else if (goal > 0) {
-                return '+' + rounded(goal) + ' kg';
+                return '+' + rounded(goal) + ' ' + this.$phrase.weightSm;
 
             } else if (goal < 0) {
-                return ' ' + rounded(goal) + ' kg';
+                return ' ' + rounded(goal) + ' ' + this.$phrase.weightSm;
             }
         }
     }

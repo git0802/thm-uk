@@ -16,12 +16,12 @@ class EmailStaticHelper
     {
         $date = Carbon::parse('last week')->startOfDay();
 
-				$latestPlanner = $user->planners()->where('starts', $date)->first();
+        $latestPlanner = $user->planners()->where('starts', $date)->first();
 
-				if(isset($latestPlanner)){
-							$stats = StatsStaticHelper::extractPlannerData($latestPlanner);
-							Mail::to($user->email)->send(new WeeklyStats($user, $stats));
-				}
+        if(isset($latestPlanner)){
+            $stats = StatsStaticHelper::extractPlannerData($latestPlanner);
+            Mail::to($user->email)->send(new WeeklyStats($user, $stats));
+        }
 
     }
 

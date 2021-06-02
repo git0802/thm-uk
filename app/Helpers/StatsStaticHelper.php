@@ -27,7 +27,7 @@ class StatsStaticHelper
             'goal' => $planner->goal,
             'netCal' => number_format($planner->calories_goal),
             'weight' => $planner->weight,
-            'date' => $planner->ends->format($dateFormat),
+            'date' => $planner->ends->format('d-m-Y'),
             'start' => $planner->starts->format($dateFormat),
             'end' => $planner->ends->format($dateFormat),
         ];

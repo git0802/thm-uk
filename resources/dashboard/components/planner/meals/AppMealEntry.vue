@@ -62,7 +62,7 @@
 
             <div class="food-block__show-group food-block__show-group--four">
                 <span class="title">Cost</span>
-                <span class="text">£{{numberToFixed(item.product.cost * item.servings)}}</span>
+                <span class="text">{{ phrase.currencySm }}{{numberToFixed(item.product.cost * item.servings)}}</span>
             </div>
         </div>
     </div>

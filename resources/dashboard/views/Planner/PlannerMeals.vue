@@ -53,7 +53,7 @@
                                     {{calculateCalories(items)}} cal.
                                 </div>
                                 <div>
-                                    £{{calculatePrice(items)}}
+                                    {{ phrase.currencySm }}{{calculatePrice(items)}}
                                 </div>
                             </div>
                         </div>
@@ -87,10 +87,7 @@
                             </div>
 
                         </div>
-                        <div class="extra-items">
-                            <app-extra-consumed/>
-                            <app-extra-exercise/>
-                        </div>
+                        <extra-calories-list/>
                     </div>
                 </template>
             </template>

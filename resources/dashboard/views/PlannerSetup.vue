@@ -10,16 +10,6 @@
             <template v-if="currentStep === 0">
                 <div>
 
-<!--                    <div class="plan__profile flex items-center justify-between" style="margin-left: 6px;">-->
-<!--                        <div class="flex items-center">-->
-<!--                            <userpic style="pointer-events: none" />-->
-<!--                            <h1>Hi <span class="purple">{{ user.name }}</span>, let's add a new weekly plan!</h1>-->
-<!--                        </div>-->
-<!--                        <div class="todays-date">-->
-<!--                            <h5>Today’s date: <span>{{ today }}</span></h5>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
                     <div class="plan__setup"><span>Setup</span></div>
                     <div class="plan__insert"><h1>To get started on your new weekly
                         plan, please insert your new weight</h1></div>

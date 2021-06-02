@@ -40,7 +40,7 @@
 
                 <div class="food-block__show-group food-block__show-group--three">
                     <span class="title">Cost</span>
-                    <span class="text">£{{numberToFixed(item.product.cost)}}</span>
+                    <span class="text">{{ phrase.currencySm }}{{numberToFixed(item.product.cost)}}</span>
                 </div>
             </div>
 
@@ -76,7 +76,7 @@
                         <span class="text">{{ dsh.store.name }}</span>
                         <span class="text" v-tooltip="dsh.package_size">{{ dsh.serving_size }}</span>
                         <span class="text">{{ dsh.calories }}</span>
-                        <span class="text">£ {{ dsh.cost }}</span>
+                        <span class="text">{{ phrase.currencySm }}{{ dsh.cost }}</span>
                     </div>
                 </div>
 

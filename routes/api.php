@@ -88,6 +88,8 @@ Route::prefix('planner')->group(static function () {
     Route::get('/', 'PlannerController@findOrCreate');
     Route::get('/initial', 'PlannerController@initialData')->middleware('subscription');
     Route::patch('{planner}/correct', 'PlannerController@extraCalories')->middleware('subscription');
+    Route::get('{planner}/extraCalories', 'ExtraCaloriesController@list')->middleware('subscription');
+    Route::delete('{planner}/extraCalories/{id}', 'ExtraCaloriesController@delete')->middleware('subscription');
     Route::post('{planner}/finish', 'PlannerController@finishInitialSetup')->middleware('subscription');
     Route::patch('{planner}/goals', 'PlannerController@goals')->middleware('subscription');
     Route::get('{planner}/shopping', 'PlannerController@shoppingList')->middleware('subscription');

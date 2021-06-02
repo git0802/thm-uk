@@ -3,13 +3,13 @@
 namespace App\Console\Commands;
 
 use App\Helpers\EmailStaticHelper;
-use App\Helpers\StatsStaticHelper;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
-use App\Mail\WeeklyStats;
-use Hash;
+use App\Helpers\StatsStaticHelper;
 use Mail;
+use App\Mail\WeeklyStats;
 
 class Test extends Command
 {
@@ -18,14 +18,7 @@ class Test extends Command
      *
      * @var string
      */
-    protected $signature = 'test';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Send every monday notification with stats and to update meal-planner';
+    protected $signature = 'test {email=admin@thehotmeal.com} {--last}';
 
     /**
      * Create a new command instance.
@@ -40,9 +33,29 @@ class Test extends Command
 
     public function handle()
     {
-      $admin = User::where('email', 'aidonline01@gmail.com')->first();
-      $stats = StatsStaticHelper::extractPlannerData($admin->planners()->first());
-      Mail::to('aidonline01@gmail.com')->send(new WeeklyStats($admin, $stats));
-      Mail::to('tara@thehotmeal.com')->send(new WeeklyStats($admin, $stats));
+        $email = $this->argument('email');
+        $user = User::where('email', $email)->first();
+
+        if (is_null($user)) {
+            $this->error("User with given email not found");
+            return;
+        }
+
+        $sendLast = $this->option('last');
+        $planner = null;
+        if ($sendLast) {
+            $date = Carbon::parse('last week')->startOfDay();
+            $planner = $user->planners()->where('starts', $date)->first();
+        } else {
+            $planner = $user->planners->last();
+        }
+        if ($planner) {
+            $stats = StatsStaticHelper::extractPlannerData($planner);
+            Mail::to($user->email)->send(new WeeklyStats($user, $stats));
+            $this->info('Weekly stats email is sent to ' .  $user->email);
+        } else {
+            $this->error('Planner not found');
+        }
+
     }
 }

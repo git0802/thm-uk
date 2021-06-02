@@ -56,6 +56,8 @@ import moment from 'moment'
                         day: moment(this.selected_day, 'YYYY-MM-DD').format('DD-MM-YYYY'),
                     });
 
+                    this.$emit('change');
+
                     this.$notify({
                         group: 'planner',
                         title: 'Yay!',
