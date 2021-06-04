@@ -132,7 +132,6 @@ Route::prefix('content')->group(static function () {
     Route::get('/', 'SiteContentController@index');
     Route::post('/update/{id}', 'SiteContentController@update');
     Route::get('/links', 'SiteContentController@socialLinks');
-
     Route::post('/links', 'SiteContentController@addSocialLink')->middleware('check.admin');
     Route::patch('/links', 'SiteContentController@updateSocialLink')->middleware('check.admin');
     Route::delete('/links', 'SiteContentController@removeSocialLink')->middleware('check.admin');
@@ -175,20 +174,21 @@ Route::prefix('quote')->group(static function () {
     Route::delete('{quote}', 'QuoteController@remove');
 });
 
-Route::prefix('preset')->middleware(['check.admin'])->group(function() {
-    Route::get('/', 'PlannerPresetController@index');
-    Route::get('/find', 'PlannerPresetController@findProduct');
+Route::prefix('preset')->group(function() {
+    Route::get('/', 'PlannerPresetController@index')->middleware('check.admin');
+    Route::get('/find', 'PlannerPresetController@findProduct')->middleware('check.admin');
     Route::get('/find/store', 'PlannerPresetController@getPresetForStore');
-    Route::post('/dish', 'PlannerPresetController@groupProducts');
-    Route::post('/publish/{preset}', 'PlannerPresetController@publishPreset');
-    Route::post('/', 'PlannerPresetController@create');
-    Route::get('/{preset}', 'PlannerPresetController@show');
-    Route::post('/{preset}', 'PlannerPresetController@addProductToPreset');
-    Route::put('/{preset}', 'PlannerPresetController@deleteProductFromPreset');
-    Route::patch('/{preset}', 'PlannerPresetController@update');
-    Route::patch('/{preset}/servings', 'PlannerPresetController@changeProductServings');
-    Route::delete('/{preset}', 'PlannerPresetController@delete');
-    Route::post('/{preset}/csv', 'PlannerPresetController@storePresetCSV');
+    Route::post('/dish', 'PlannerPresetController@groupProducts')->middleware('check.admin');
+    Route::post('/publish/{preset}', 'PlannerPresetController@publishPreset')->middleware('check.admin');
+    Route::post('/', 'PlannerPresetController@create')->middleware('check.admin');
+    Route::get('/{preset}', 'PlannerPresetController@show')->middleware('check.admin');
+    Route::post('/{preset}', 'PlannerPresetController@addProductToPreset')->middleware('check.admin');
+    Route::put('/{preset}', 'PlannerPresetController@deleteProductFromPreset')->middleware('check.admin');
+    Route::patch('/{preset}', 'PlannerPresetController@update')->middleware('check.admin');
+    Route::patch('/{preset}/servings', 'PlannerPresetController@changeProductServings')->middleware('check.admin');
+    Route::delete('/{preset}', 'PlannerPresetController@delete')->middleware('check.admin');
+    Route::post('/{preset}/csv', 'PlannerPresetController@storePresetCSV')->middleware('check.admin');
+
 });
 
 
