@@ -4,32 +4,32 @@ const phrases = {
         const phrase = {
             coUk: {
                 currencySm: '£',
-                weightSm: 'kg',
+                weightSm: 'lbs',
                 countryShortCode: 'GB',
 
-                minWeight: 30,
-                maxWeight: 250,
+                minWeight: 60,
+                maxWeight: 600,
 
-                minHeight: 50,
-                maxHeight: 255,
+                minHeight: 25,
+                maxHeight: 100,
 
                 goalList: [
-                    'Lose 1 kg per week',
-                    'Lose 0.5 kg per week',
-                    'Lose 0.25 kg per week',
+                    'Lose 2 lb per week',
+                    'Lose 1 lb per week',
+                    'Lose 0.5 lb per week',
                     'Maintain weight',
-                    'Gain 0.25 kg per week',
-                    'Gain 0.5 kg per week',
-                    'Gain 1 kg per week'
+                    'Gain 0.5 lb per week',
+                    'Gain 1 lb per week',
+                    'Gain 2 lb per week'
                 ],
                 goalListValues: [
+                    -2,
                     -1,
                     -0.5,
-                    -0.25,
                     0,
-                    0.25,
                     0.5,
-                    1
+                    1,
+                    2
                 ]
             },
             com: {
