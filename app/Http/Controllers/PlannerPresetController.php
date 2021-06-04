@@ -68,18 +68,6 @@ class PlannerPresetController extends Controller
             ->first();
 
         if ($preset) {
-
-            $user = Auth::guard('sanctum')->user();
-
-            if(!$user->finished_setup) {
-
-                $latestPlanner = $user->planners()->latest()->orderBy('starts')->with('meals')->first();
-
-                if ($latestPlanner) {
-                    Planner::find($latestPlanner->id)->meals()->delete();
-                }
-            }
-
             return PlannerPresetResource::make($preset);
         } else {
             return response([
