@@ -10,8 +10,6 @@ class SupportController extends Controller
 {
     public function __invoke(SupportRequest $request)
     {
-        Notification::route('mail', env('TARA_EMAIL'))
-            ->notify(new SendEmailToSupport($request->all()));
         Notification::route('mail', env('HELLO_EMAIL'))
             ->notify(new SendEmailToSupport($request->all()));
 
