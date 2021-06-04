@@ -15,9 +15,5 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 ngrok.exe
-/public/css
-/public/js
-/public/mix-manifest.json
-package-lock.json
 /storage/app/images/product/*
 /resources/admin/plugins/ckeditor/node_modules/
