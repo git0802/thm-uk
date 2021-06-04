@@ -200,7 +200,7 @@ export default {
                     gender: this.form.gender.value.toLowerCase(),
                 })
                 this.loading = false;
-                this.$store.commit('auth/user', res.data.user)
+                this.$store.commit('auth/userInfo', res.data.user)
                 this.message = res.data.message
                 this.$notify({
                     group: 'planner',

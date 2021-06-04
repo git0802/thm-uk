@@ -188,7 +188,7 @@ export default {
                     new_password_confirm: this.form.new_password_confirm.value,
                 })
                 this.loading = false;
-                this.$store.commit('auth/user', res.data.user)
+                this.$store.commit('auth/userInfo', res.data.user)
                 this.message = res.data.message
                 this.$notify({
                     group: 'planner',

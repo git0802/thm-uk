@@ -62,7 +62,7 @@ export default {
                     phone: this.phone_number,
                 })
                 this.loading = false;
-                this.$store.commit('auth/user', res.data.user)
+                this.$store.commit('auth/userInfo', res.data.user)
                 this.message = res.data.message
                 this.$notify({
                     group: 'planner',

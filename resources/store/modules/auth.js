@@ -117,6 +117,9 @@ const mutations = {
         state.user = user.user;
         state.subscriptionPlan = user.subscription;
     },
+    userInfo: (state, user) => {
+        state.user = user;
+    },
     setUserWeight: (state, weight) => {
         state.user.weight = weight;
     },
