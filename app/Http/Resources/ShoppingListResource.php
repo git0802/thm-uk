@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\ProductHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ShoppingListResource extends JsonResource
@@ -20,7 +21,7 @@ class ShoppingListResource extends JsonResource
              'store'        => $this['product']['store']['name'],
              'calories'     => $this['product']['calories'],
              'serving_size' => $this['product']['serving_size'],
-             'url'          => $this['product']['original_url'],
+             'url'          => ProductHelper::fullLink($this['product']['original_url']),
              'servings'     => $this['count'],
              'cost'         => $this['cost'],
         ];

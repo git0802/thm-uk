@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Product;
 
+use App\Helpers\ProductHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,7 +22,7 @@ class FindProductResource extends JsonResource
         $products['image'] = $this->image
             ? url('storage/' . $this->image->path)
             : url('images/no-product-image.jpg');
-        $products['url'] = $this->original_url;
+        $products['url'] = ProductHelper::fullLink($this->original_url);
         $products['is_custom'] = $this->owner_id !== null;
         $products['dish'] = $this->when($this->is_dish, ProductResource::collection($this->dish));
         return $products;

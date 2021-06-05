@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\ProductHelper;
 use App\Http\Resources\Store\StoreResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -35,7 +36,7 @@ class ClonnedProductResource extends JsonResource
             $array['package_size'] = $this['package_size'];
         }
         if(isset($this['original_url'])) {
-            $array['url'] = $this['original_url'];
+            $array['url'] = ProductHelper::fullLink($this['original_url']);
         }
         return $array;
     }

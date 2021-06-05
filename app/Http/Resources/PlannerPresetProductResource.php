@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\ProductHelper;
 use App\Http\Resources\Product\ProductResource;
 use App\Http\Resources\Store\StoreResource;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -25,7 +26,7 @@ class PlannerPresetProductResource extends JsonResource
             'store_id' => $this->store_id,
             'serving_size' => $this->serving_size,
             'package_size' => $this->package_size,
-            'url' => $this->original_url,
+            'url' => ProductHelper::fullLink($this->original_url),
             'calories' => $this->calories,
             'cost' => $this->cost,
             'is_custom' => $this->owner_id !== null,
