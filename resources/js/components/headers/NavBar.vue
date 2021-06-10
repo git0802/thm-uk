@@ -22,16 +22,16 @@
                             </a>
                             <a class="links__item" :active-class="'links__item--active'" href="/about">
                                 About us
-                            </a>                            
+                            </a>
                             <a class="links__item" :active-class="'links__item--active'"  @click="anchor({name: 'Landing', hash: '#whyitworks'})">
                                 {{ site_content[2].block_name }}
                             </a>
                             <a class="links__item" :active-class="'links__item--active'"  @click="anchor({name: 'Landing', hash: '#benefits'})">
                                 Benefits
                             </a>
-                            <router-link class="links__item" :active-class="'links__item--active'" :to="{name: 'Blogs' }" @click.native="close()" exact>
+                            <a class="links__item" href="https://blog.thehotmeal.com">
                                 Blog
-                            </router-link>
+                            </a>
                         </ul>
                     </div>
                     <div class="login-block">
