@@ -16,6 +16,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16-dunplab-manifest-15727.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32-dunplab-manifest-15727.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96-dunplab-manifest-15727.png">
+    @include('includes.gtm-head')
     @include('includes.laravel')
     @include('includes.seo')
     <script src="{{ mix('js/app.js') }}" defer></script>
@@ -24,15 +25,8 @@
     @include('facebook-pixel::head')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-181072838-1"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-181072838-1');
-</script>
 <body>
+@include('includes.gtm-body')
 @include('facebook-pixel::body')
 @include('includes.noscript')
 <div id="app"></div>
@@ -40,18 +34,6 @@
     @component('components.loader')
     @endcomponent
 </div>
-<script type="text/javascript">
-    var sc_project=12415078;
-    var sc_invisible=1;
-    var sc_security="57848a5a";
-</script>
-<script type="text/javascript"
-        src="https://www.statcounter.com/counter/counter.js"
-        async></script>
-<noscript><div class="statcounter"><a title="Web Analytics"
-                                      href="https://statcounter.com/" target="_blank"><img
-                class="statcounter"
-                src="https://c.statcounter.com/12415078/0/57848a5a/1/"
-                alt="Web Analytics"></a></div></noscript>
+@include('includes.statcounter')
 </body>
 </html>
