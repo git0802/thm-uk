@@ -4,7 +4,6 @@
         fullscreen
         hide-overlay
         transition="dialog-bottom-transition"
-        scrollable
         persistent
     >
         <v-card tile>
