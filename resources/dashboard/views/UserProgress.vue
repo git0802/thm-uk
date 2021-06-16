@@ -50,7 +50,10 @@
                     </div>
                 </div>
 
-
+                <div style="display: flex" class="progress__graph">
+                    <div >Historical Progress</div>
+                    <date-range-input :range="range" @datepickerUpdate="updateDateRange"></date-range-input>
+                </div>
                 <div class="progress__graph progress__graph-allweeks">
                     <div class="progress__graph-container ">
                         <chart-calories-weekly :chart-data="allWeeksProgress.data"
@@ -75,21 +78,11 @@
                     </div>
                 </div>
 
-
                 <div class="progress__graph progress__graph__daily-spending">
                     <div class="progress__graph-container">
-
-                        <div class="progress__daily-spending" :class="{'progress__daily-spending--mobile': is_mobile}">
-
-                            <template v-for="(day, key, index) in this.sortedDaysByKeyName(dailySpending.data)">
-                                <chart-spending-daily :sizeCase="sizeCase" :data="day" :maxedValue="maxDailySpendingValue"
-                                                      :date="key" :index="index"/>
-                            </template>
-
-
-                        </div>
-
-
+                        <chart-spending-line :chart-data="allWeeksSpending.data"
+                                               :styles="allWeeksStyle"
+                        />
                     </div>
                     <div class="progress__caption-container">
                         <div class="progress__title">
@@ -169,13 +162,32 @@ import WeekTd from "../components/planner/progress/weekly-td";
 import moment from 'moment'
 import OverlayComponent from '../../js/components/overlay/OverlayComponent'
 import map from 'lodash/map'
+import params from "../../store/modules/params";
+import ChartSpendingLine from "../components/charts/ChartSpendingLine";
 
 
 export default {
     name: "UserProgress",
-    components: {WeekTd, ChartSpendingDaily, ChartCaloriesWeekly, ChartCaloriesDaily, OverlayComponent, ButtonBase, AppLeftDrawerBurger},
+    components: {
+        ChartSpendingLine,
+        WeekTd, ChartSpendingDaily, ChartCaloriesWeekly, ChartCaloriesDaily, OverlayComponent, ButtonBase, AppLeftDrawerBurger},
     data: function () {
         return {
+            allWeeksSpending: {
+                data: {
+                    labels:[],
+                    datasets: [
+                        {
+                            data: [],
+                            fill: 'undefined',
+                            borderColor: '#B27DFF',
+                            pointBorderColor: '#CA5FBB',
+                            pointHoverBorderWidth: 5,
+                            pointHoverRadius: 5
+                        }
+                    ]
+                }
+            },
             allWeeksProgress: {
                 options: {
                     responsive: true,
@@ -352,7 +364,11 @@ export default {
             weeklyDetails: [],
             height: 134,
             opened: [],
-            isLoading: false
+            isLoading: false,
+            range: {
+                start: moment().subtract(2, 'months').toDate(),
+                end: new Date(),
+            },
         }
     },
     computed: {
@@ -390,6 +406,10 @@ export default {
         await this.fetchProgress();
     },
     methods: {
+        async updateDateRange(data) {
+            this.range = data
+            await this.fetchProgress()
+        },
         handleNewPlan() {
             if (this.user.finished_setup === false) {
                 window.location.href = '/store'
@@ -411,11 +431,24 @@ export default {
         async fetchProgress() {
             this.isLoading = true;
             try {
-                let res = await this.$http.get(`/api/stats/total`)
+                let res = await this.$http.get(`/api/stats/total`, {
+                    params: {
+                        start: moment(this.range.start).format('DD-MM-YYYY'),
+                        end: moment(this.range.end).format('DD-MM-YYYY'),
+                    }
+                })
 
                 this.weeklyDetails = res.data.stats.allWeeks;
+
+                this.allWeeksProgress.data.labels = [];
+                this.allWeeksSpending.data.labels = [];
+                this.allWeeksProgress.data.datasets[0].data = [];
+                this.allWeeksProgress.data.datasets[1].data = [];
+                this.allWeeksSpending.data.datasets[0].data = [];
                 for (let i = 0; i < res.data.stats.allWeeks.length; i++) {
                     this.allWeeksProgress.data.labels.push(res.data.stats.allWeeks[i].date);
+                    this.allWeeksSpending.data.labels.push(res.data.stats.allWeeks[i].date);
+                    this.allWeeksSpending.data.datasets[0].data.push(res.data.stats.allWeeks[i].spent);
                     this.allWeeksProgress.data.datasets[0].data.push(res.data.stats.allWeeks[i].plan);
                     this.allWeeksProgress.data.datasets[1].data.push(res.data.stats.allWeeks[i].fact);
                 }

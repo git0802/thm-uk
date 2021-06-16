@@ -121,10 +121,26 @@ class StatsController extends Controller
             'currentWeek' => $this->currentWeek($planners->where('starts', Carbon::now()->startOfWeek())->first()),
             'allWeeks' => [],
         ];
+
+        if ($request->has('start')) {
+            $start = $request->get('start');
+            $planners = $planners->filter(function ($value, $key) use ($start){
+                return new Carbon($value->ends) >= new Carbon($start);
+            });
+        }
+
+        if ($request->has('end')) {
+            $end = $request->get('end');
+            $planners = $planners->filter(function ($value, $key) use ($end){
+                return new Carbon($value->starts) <= new Carbon($end);
+            });
+        }
+
+        $offset = $request->user()->planners->where('starts', '<', $planners->min('starts'))->count();
         $i = 0;
         foreach ($planners->sortBy('starts') as $planner) {
             $result['allWeeks'][] = StatsStaticHelper::extractPlannerData($planner);
-            $result['allWeeks'][$i]['linkText'] = "View Week " . ($i + 1);
+            $result['allWeeks'][$i]['linkText'] = "View Week " . ($offset + $i + 1);
             $i++;
         }
 
