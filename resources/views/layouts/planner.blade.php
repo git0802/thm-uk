@@ -39,8 +39,6 @@
     @include('includes.gtm-body')
 <div id="app"></div>
 <div id="preloader">
-    @component('components.loader')
-    @endcomponent
 </div>
 @include('includes.statcounter')
 </body>
