@@ -43,8 +43,6 @@
         }
 
         &__info {
-            margin-right: 120px;
-
             @media screen and (min-width: 768px) and (max-width: 991px) {
                 margin-right: 60px;
             }
