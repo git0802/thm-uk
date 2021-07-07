@@ -3,7 +3,7 @@
     <button class="button-complete-order" :class="{ 'disabled' : isDisabled }"
         :disabled="isDisabled"
         @click="$emit('click')"
-    >COMPLETE ORDER
+    >START FREE TRIAL
     </button>
 </template>
 
