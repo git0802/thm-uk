@@ -39,7 +39,7 @@
         <div class="review-list__button">
 
             <button-base
-                :text="'GET MY WEEKLY PLAN'"
+                :text="text"
                 @click="saveButton"
             />
         </div>
@@ -65,6 +65,16 @@ export default {
         WeeklyTd,
         TotalTd,
         ButtonBase
+    },
+    props: {
+        next: {
+            type: Boolean,
+            default: false
+        },
+        text: {
+            type: String,
+            default: 'GET MY WEEKLY PLAN'
+        }
     },
     data() {
         return {
@@ -120,7 +130,11 @@ export default {
             WinPrint.print();
         },
         saveButton() {
-            window.location.href = '/meal-planner/planner/'
+            if (this.next) {
+                this.$emit('next')
+            } else {
+                window.location.href = '/meal-planner/planner/'
+            }
         },
         async fetchStoreList() {
             this.is_busy = true;

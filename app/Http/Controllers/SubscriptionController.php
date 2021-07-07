@@ -8,6 +8,7 @@ use App\Exceptions\Error;
 use App\Exceptions\PaymentException;
 use App\Http\Requests\RenewSubscription;
 use App\Mail\SubscriptionCancelled;
+use App\Mail\SubscriptionCreated;
 use App\Mail\SubscriptionRenew;
 use App\SubscriptionPlan;
 use Illuminate\Http\Response;
@@ -198,10 +199,12 @@ class SubscriptionController extends Controller
      * Renew subscription.
      *
      * @param RenewSubscription $request
+     * @param bool $renew
      * @return Response
-     * @throws PaymentException|ApiErrorException
+     * @throws ApiErrorException
+     * @throws PaymentException
      */
-    public function renew(RenewSubscription $request)
+    public function renew(RenewSubscription $request, $renew = true)
     {
         $user   = Auth::user();
         $stripe = new StripeClient(env('STRIPE_API_KEY'));
@@ -273,12 +276,23 @@ class SubscriptionController extends Controller
             throw new PaymentException($exception->getMessage(), 422);
         }
 
-        Mail::to($user->email)->send(new SubscriptionRenew($user));
+        if ($renew) {
+            Mail::to($user->email)->send(new SubscriptionRenew($user));
+            $message = 'Subscription successfully renewed!';
+        } else {
+            Mail::to($user->email)->send(new SubscriptionCreated($user));
+            $message = 'Subscription successfully created!';
+        }
 
         return response([
             'done'    => true,
             'result'  => 'success',
-            'message' => 'Subscription successfully renewed!',
+            'message' => $message,
         ]);
+    }
+
+    public function create(RenewSubscription $request)
+    {
+        return $this->renew($request, false);
     }
 }
