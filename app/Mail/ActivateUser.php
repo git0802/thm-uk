@@ -23,14 +23,7 @@ class ActivateUser extends Mailable
 
     public function __construct(User $user)
     {
-        $subscription = new SubscriptionRepository();
-
         $this->user  = $user;
-        $this->price = $subscription->getSubscriptionRepo($this->user->subscription->subscriptionPlan->name);
-
-        if ( $this->user->subscription->start == $this->user->subscription->ending ) {
-            $this->user->subscription->ending = $this->user->subscription->ending->addMonths($this->user->subscription->subscriptionPlan->months);
-        }
     }
 
     /**
@@ -43,8 +36,6 @@ class ActivateUser extends Mailable
         return $this->subject('Activate Your Meal Planner Account')
                     ->view('emails.activate', [
                         'user'   => $this->user,
-                        'price'  => $this->price,
-                        'coupon' => $this->user->coupon
                     ]);
     }
 }

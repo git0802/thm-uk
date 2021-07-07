@@ -75,7 +75,7 @@
                         break;
                     case 3:
                         this.currentStepText = 'Step 04';
-                        this.currentStepDescription = 'Create an account';
+                        this.currentStepDescription = 'Create a FREE account';
                         break;
                 }
 

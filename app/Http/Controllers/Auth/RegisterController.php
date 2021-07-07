@@ -51,7 +51,7 @@ class RegisterController extends Controller
     {
         $this->request = $request;
 
-        $this->handleCoupon();
+        // $this->handleCoupon();
         $result = $this->saveUser($subscription);
 
         return response($result, $result['done'] ? 200 : 422);
@@ -115,73 +115,41 @@ class RegisterController extends Controller
     private function saveUser($subscription)
     {
         try {
-            $intents = $this->stripe->setupIntents->retrieve($this->request->verification);
+            $trial  = $subscription->getData('trial');
+            $start  = now()->addDays($trial);
+            $ending = now()->addDays($trial);
 
-            if ($intents->status !== 'succeeded') {
-                return [
-                    'done'    => false,
-                    'result'  => 'error',
-                    'message' => 'It\'s impossible to connect this card to your account. Please use another card and try again.'
-                ];
-            }else{
-//                $set    = $this->coupon ? $this->coupon->set : CouponSet::default()->first();
-                $trial  = $subscription->getData('trial');
-                $subscriptionPlan = SubscriptionPlan::find($this->request->subscription);
-                $start  = now()->addDays($trial);
-                $ending = now()->addDays($trial);
+            $this->user = User::make($this->request->all());
+            $this->user->password = Hash::make($this->user->password);
+            $this->user->activation_token = Str::random(50);
+            $this->user->goal = $this->request->initial_goal;
+            $this->user->save();
 
-                try {
-                    $this->stripe->customers->update($intents->customer, [
-                        'invoice_settings' => [
-                            'default_payment_method' => $intents->payment_method
-                        ]
-                    ]);
+            $customers = $this->stripe->customers->create([
+                'name' => $this->user->name .' '. $this->user->last_name,
+                'email' => $this->user->email,
+            ]);
 
-                    $response = $this->stripe->subscriptions->create([
-                        'trial_period_days' => $trial,
-                        'off_session' => true,
-                        'customer' => $intents->customer,
-                        'items'    => [
-                            ['price' => $subscriptionPlan->stripe_price_id]
-                        ]
-                    ]);
+            $this->payment = Subscription::make([
+                'subscription_plan_id' => null,
+                'subscription_id' => null,
+                'payment_method'  => null,
+                'customer_id'     => $customers->id,
+                'user_id'         => $this->user->id,
+                'start'           => $start,
+                'ending'          => $ending,
+                'paid'            => (bool)$trial,
+            ]);
 
-                    $this->user = User::make($this->request->all());
-                    $this->user->password = Hash::make($this->user->password);
-                    $this->user->activation_token = Str::random(50);
-                    $this->user->goal = $this->request->initial_goal;
-                    $this->user->save();
+            $this->payment->save();
 
-                    $this->payment = Subscription::make([
-                        'subscription_plan_id' => $subscriptionPlan->id,
-                        'subscription_id' => $response->id,
-                        'payment_method'  => $intents->payment_method,
-                        'customer_id'     => $intents->customer,
-                        'user_id'         => $this->user->id,
-                        'start'           => $start,
-                        'ending'          => $ending,
-                        'paid'            => (bool)$trial,
-                    ]);
+            Mail::to($this->user->email)->send(new ActivateUser($this->user));
 
-                    $this->payment->save();
-
-                    if ($this->coupon) {
-                        $this->coupon->user_id = $this->user->id;
-                        $this->coupon->save();
-                    }
-
-                    Mail::to($this->user->email)->send(new ActivateUser($this->user));
-
-                    return [
-                        'done'    => true,
-                        'result'  => 'success',
-                        'message' => 'Please, confirm your email to continue.'
-                    ];
-                } catch (InvalidRequestException $exception) {
-                    $this->stripe->customers->delete($intents->customer);
-                    throw new PaymentException($exception->getMessage(), 422);
-                }
-            }
+            return [
+                'done'    => true,
+                'result'  => 'success',
+                'message' => 'Please, confirm your email to continue.'
+            ];
         } catch (InvalidRequestException $exception) {
             throw new PaymentException($exception->getMessage(), 422);
         }
