@@ -84,6 +84,22 @@
                 />
             </div>
 
+
+            <enter-details
+                :show-next="false"
+                @validation="actionsInputData"
+            />
+            <h3>Calculate your daily calories goal</h3>
+            <calculate-calorie
+                :show-next="false"
+                @validation="actionsInputData"
+            />
+            <div class="warning-container">
+                <template v-for="error in errorsRegister">
+                    <warning-message class="p-t-8" :message="error"/>
+                </template>
+            </div>
+
             <div style="display: flex; flex-direction: row; justify-content: center;">
                 <button-next
                         :text="'START FREE TRIAL'"
@@ -135,6 +151,8 @@
                     confirm_email: false,
                     password: false,
                     confirm_password: false,
+                    details: false,
+                    goal: false,
                 },
 
                 form: {
@@ -261,6 +279,7 @@
                 errors: 'info/getErrors',
                 userParams: 'params/getUserParams',
                 initialGoal: 'params/getInitialGoal',
+                errorsRegister: 'info/getErrorsRegister',
             }),
 
             computedShowWarningMessage() {
@@ -337,7 +356,6 @@
 
                 this.setVerification('trail'); // Dummy Verification code
                 this.register({userInfo: this.userInfo, router: this.$router});
-                this.$emit('resetIsRegister');
             }
         }
     }
@@ -374,9 +392,13 @@
 
 
     .user-info {
-        display: flex;
-        flex-direction: column;
+        max-width: 700px;
+        h3 {
+            @include title-font;
 
+            margin-top: 25px;
+            z-index: 2;
+        }
         &__row, &__name, &__email, &__password, &__phone {
             display: flex;
             flex-direction: row;

@@ -23,7 +23,7 @@
                     @validation="validationParam"
                 />
             </div>
-            <div class="enter-details__row m-b-47">
+            <div class="enter-details__row">
                 <input-user-params
                     class="enter-details__weight"
                     :name="'weight'"
@@ -43,7 +43,7 @@
                     />
                 </div>
             </div>
-            <div class="enter-details__row">
+            <div class="enter-details__row" v-if="showNext">
                 <button-next
                     :isDisabled="isDisabledNextButton"
                     :text="'CONTINUE TO FREE TRIAL'"
@@ -59,6 +59,12 @@
     import { mapGetters, mapMutations } from "vuex";
 
     export default {
+        props:{
+            showNext: {
+                type: Boolean,
+                default: true
+            }
+        },
         data() {
             return {
                 isDisabledNextButton: true,
@@ -128,6 +134,7 @@
                     }
                 }
                 this.isDisabledNextButton = isValid;
+                this.$emit('validation', 'details', !isValid, !isValid);
             }
         },
     }

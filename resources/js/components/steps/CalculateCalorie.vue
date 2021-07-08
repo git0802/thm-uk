@@ -24,7 +24,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="calories-container__next">
+            <div class="calories-container__next" v-if="showNext">
                 <button-next
                     :isDisabled="isDisabledNextButton"
                     @click="nextStep"
@@ -38,6 +38,12 @@
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
+    props:{
+        showNext: {
+            type: Boolean,
+            default: true
+        }
+    },
     data() {
         return {
             isDisabledNextButton: true,
@@ -61,6 +67,12 @@ export default {
     created() {
         this.calculateMaintainCalories();
     },
+    watch: {
+        userParams: {
+            handler: 'updateCalculation',
+            deep: true
+        }
+    },
     methods: {
         ...mapMutations({
             setGoal: 'params/setGoal',
@@ -77,8 +89,14 @@ export default {
             //Mifflin-St Jeor Equation
             this.maintainCalories = Math.round((10 * weightKG + 6.25 * heightCM - 5 * age + genderCorrectingValue) * this.activityFactor);
         },
+        updateCalculation() {
+            if (this.initialGoal.selectedGoal) {
+                this.calculateCalories(null, true, this.initialGoal.selectedGoal)
+            }
+        },
         calculateCalories(name, state, value) {
             if (state) {
+                this.calculateMaintainCalories()
                 const MIN_CALORIES_MEN = 1200;
                 const MIN_CALORIES_WOMEN = 1000;
                 const minCalories = this.userParams.gender === 'Male' ? MIN_CALORIES_MEN : MIN_CALORIES_WOMEN;
@@ -108,6 +126,8 @@ export default {
                 this.initialGoal.calories = String(this.initialGoal.calories);
 
                 this.isDisabledNextButton = false;
+                this.setGoal(this.initialGoal);
+                this.$emit('validation', 'goal', true, this.initialGoal);
             }
         }
     }
