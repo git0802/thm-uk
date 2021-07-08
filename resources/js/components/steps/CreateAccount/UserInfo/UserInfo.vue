@@ -564,7 +564,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../../../../sass/mixins';
 
 @media screen and (max-width: 1201px){
@@ -701,7 +701,7 @@ input.input-container__entry {
     }
 
     &__name {
-        margin-bottom: 25px;
+        margin-bottom: 20px;
 
         &__first, &__last {
             flex-basis: 50%;
@@ -712,7 +712,7 @@ input.input-container__entry {
 
             @media screen and (max-width: 991px) {
                 margin-right: 0px;
-                margin-bottom: 25px;
+                margin-bottom: 20px;
             }
         }
     }

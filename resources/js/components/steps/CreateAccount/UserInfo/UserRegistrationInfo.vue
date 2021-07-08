@@ -394,12 +394,11 @@
     .user-info {
         max-width: 700px;
         h3 {
-            @include title-font;
+            @include head-24-font;
 
-            margin-top: 25px;
             z-index: 2;
         }
-        &__row, &__name, &__email, &__password, &__phone {
+        &__row , &__email, &__password, &__phone {
             display: flex;
             flex-direction: row;
 
@@ -502,6 +501,13 @@
         }
 
         &__name {
+            display: flex;
+            flex-direction: row;
+
+            @media screen and (max-width: 991px) {
+                margin-bottom: 0px !important;
+            }
+
             margin-bottom: 25px;
 
             &__first, &__last {
@@ -554,7 +560,7 @@
         }
 
         &__phone {
-            margin-bottom: 37px;
+            margin-bottom: 25px;
 
             .vue-phone-number-input {
                 max-width: 330px;
@@ -565,7 +571,7 @@
             }
 
             @media screen and (max-width: 1200px) {
-                margin-bottom: 57px;
+                margin-bottom: 25px;
             }
         }
 
