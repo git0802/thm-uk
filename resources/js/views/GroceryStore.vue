@@ -223,9 +223,7 @@ export default {
 
         async finishUserSetup() {
             let status = await this.finishSetup(false)
-            if(status) {
-                window.location.href = '/meal-planner/planner/'
-            }
+            window.location.href = '/meal-planner/planner/'
         },
 
         async nextStep() {
