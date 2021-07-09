@@ -182,5 +182,6 @@
 
     .heightFieldFt {
         flex-basis: 50%;
+        margin-right: 10px;
     }
 </style>

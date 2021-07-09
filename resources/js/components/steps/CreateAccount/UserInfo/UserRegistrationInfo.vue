@@ -89,7 +89,7 @@
                 :show-next="false"
                 @validation="actionsInputData"
             />
-            <h3>Calculate your daily calories goal</h3>
+            <h3>Choose your daily calorie goal</h3>
             <calculate-calorie
                 :show-next="false"
                 @validation="actionsInputData"
@@ -393,6 +393,10 @@
 
     .user-info {
         max-width: 700px;
+        padding-bottom: 30px;
+        @media screen and (max-width: 991px) {
+            padding-bottom: 60px;
+        }
         h3 {
             @include head-24-font;
 
@@ -518,7 +522,7 @@
                 margin-right: 16px;
 
                 @media screen and (max-width: 991px) {
-                    margin-right: 0px;
+                    margin-right: 10px;
                     margin-bottom: 25px;
                 }
             }

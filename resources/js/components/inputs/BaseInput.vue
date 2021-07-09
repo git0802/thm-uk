@@ -157,6 +157,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+    @import '../../../sass/_mixins.scss';
 .input-container {
     display: flex;
     flex-direction: column;
@@ -197,6 +198,7 @@ export default {
     }
 
     &__entry {
+        @include base-font;
         width: 100%;
         background: transparent;
         color: var(--black);
