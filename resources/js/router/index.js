@@ -97,12 +97,12 @@ const routes = [
         path: "/about",
         name: "About",
         component: About,
-    },    
-    {
+    },
+    /*{
         path: "/faq",
         name: "FAQ",
         component: FAQ,
-    },
+    },*/
     {
         path: "/support",
         name: "Support",
