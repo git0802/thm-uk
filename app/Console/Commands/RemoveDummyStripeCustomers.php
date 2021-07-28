@@ -24,8 +24,6 @@ class RemoveDummyStripeCustomers extends Command
      */
     protected $description = 'Remove customers from stripe';
 
-    protected $stripe;
-
     /**
      * Create a new command instance.
      *
@@ -34,7 +32,6 @@ class RemoveDummyStripeCustomers extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->stripe = new StripeClient(env('STRIPE_API_KEY'));
     }
 
     /**
@@ -63,6 +60,8 @@ class RemoveDummyStripeCustomers extends Command
 
     private function removeCustomers($subscriptions)
     {
+        $stripe = new StripeClient(env('STRIPE_API_KEY'));
+
         $users = collect();
         foreach ($subscriptions as $subscription) {
             $user = $subscription->user;
@@ -72,7 +71,7 @@ class RemoveDummyStripeCustomers extends Command
                 // Set customer_id = null, ending = null, start = null
 
                 try {
-                    $paymentMethods = $this->stripe->paymentMethods->all([
+                    $paymentMethods = $stripe->paymentMethods->all([
                         'customer' => $subscription->customer_id,
                         'type' => 'card',
                     ]);
@@ -85,8 +84,6 @@ class RemoveDummyStripeCustomers extends Command
                 } catch (\Exception $e) {
                     $this->error($e->getMessage());
                 }
-
-
 
 
                 $this->info('Removed ==> ' . $user->name . ' | ' . $user->email . ' | ' . $subscription->customer_id);
