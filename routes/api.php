@@ -79,6 +79,7 @@ Route::prefix('subscription')->group(static function () {
     Route::post('renew', 'SubscriptionController@renew');
     Route::post('create', 'SubscriptionController@create');
     Route::post('renew-check', 'SubscriptionController@renewCheck');
+    Route::post('create-check', 'SubscriptionController@check');
 });
 
 Route::prefix('stripe')->group(static function () {
@@ -87,7 +88,7 @@ Route::prefix('stripe')->group(static function () {
 
 Route::prefix('planner')->group(static function () {
     Route::get('/', 'PlannerController@findOrCreate');
-    Route::get('/initial', 'PlannerController@initialData')->middleware('subscription');
+    Route::get('/initial', 'PlannerController@initialData');
     Route::patch('{planner}/correct', 'PlannerController@extraCalories')->middleware('subscription');
     Route::get('{planner}/extraCalories', 'ExtraCaloriesController@list')->middleware('subscription');
     Route::delete('{planner}/extraCalories/{id}', 'ExtraCaloriesController@delete')->middleware('subscription');

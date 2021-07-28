@@ -39,6 +39,10 @@ const routes = [
                     if (!store.getters['auth/authenticated']) {
                         window.location = '/login';
                     } else {
+                        let user = store.getters['auth/user'];
+                        if (user && !user.finished_setup && !user.is_admin) {
+                            window.location = '/store';
+                        }
                         let subscriptionStatus = store.getters['auth/getSubscriptionStatus'];
                         if(subscriptionStatus == null || subscriptionStatus.is_expired){
                             next({name: 'dashboard.settings'});

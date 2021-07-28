@@ -1,6 +1,20 @@
 <template>
-    <div class="create-subscription" v-if="subscriptionStatus && subscriptionStatus.subscription && subscriptionStatus.is_cancelled">
+    <div class="create-subscription">
+        <div class="create-subscription__txt">
+            <div class="create-subscription__txt__capital create-subscription__txt__welcome">
+                HI {{user.name}}, START YOUR FREE TRIAL!
+            </div>
+            <div class="create-subscription__txt__info">
+                Plan your meals to manage your weight.
+                <br>
+                Fitness begins now, wherever you are.
+            </div>
+            <div class="create-subscription__txt__small">
+                No gym needed. Sign up for 14 days free. Cancel any time.
+            </div>
+        </div>
         <div class="create-subscription__info">
+
             <div class="payment-info">
                 <form>
                     <div class="payment-info__card">
@@ -75,8 +89,21 @@
                     </div>
                 </div>
 
-                <div class="payment-info__subscriptions-group">
-                    <label class="payment-info__subscription" >
+                <button class="subscription-button" v-if="!subListOpen" @click="subListOpen = !subListOpen">
+                    <div class="subscription-button__arrow-icon">
+                        <svg width="16" height="9" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 1L8 8L1 1" stroke="#292D34"/>
+                        </svg>
+                    </div>
+                    <span v-if="validSubscription">Subscription : </span>
+                    <span v-else>Choose a subscription plan</span>
+                    <label style="padding-left: 10px"  v-if="validSubscription">
+                        {{validSubscription.title}} | {{validSubscription.months}}-month | {{ phrase.currencySm }}{{validSubscription.amount}}
+                    </label>
+
+                </button>
+                <div class="payment-info__subscriptions-group" v-else>
+                    <label class="payment-info__subscription">
                         <span class="text-bold title">{{price[0].title}}</span>
                         <span class="text">{{price[0].months}}-month</span>
                         <label>
@@ -85,6 +112,7 @@
                         </label>
                         <input type="radio" name="payment-info__subscription" :value="price[0].id"
                                v-model.number="subscription"
+                               @change="subListOpen = false"
                         >
                         <svg width="15" height="10" viewBox="0 0 15 10" fill="#FFFFFF">
                             <path d="M13.795 0.199426C13.5216 -0.0664754 13.0784 -0.0664754 12.805 0.199426L4.41859 8.35645L1.19499 5.22105C0.921634 4.95515 0.478447 4.95518 0.205037 5.22105C-0.0683456 5.48693 -0.0683456 5.91799 0.205037 6.18389L3.92362 9.80066C4.19689 10.0665 4.64041 10.0664 4.91357 9.80066L13.795 1.16229C14.0684 0.896414 14.0683 0.465328 13.795 0.199426Z"/>
@@ -99,6 +127,7 @@
                         </label>
                         <input type="radio" name="payment-info__subscription" :value="price[1].id"
                                v-model.number="subscription"
+                               @change="subListOpen = false"
                         >
                         <svg width="15" height="10" viewBox="0 0 15 10" fill="#FFFFFF">
                             <path d="M13.795 0.199426C13.5216 -0.0664754 13.0784 -0.0664754 12.805 0.199426L4.41859 8.35645L1.19499 5.22105C0.921634 4.95515 0.478447 4.95518 0.205037 5.22105C-0.0683456 5.48693 -0.0683456 5.91799 0.205037 6.18389L3.92362 9.80066C4.19689 10.0665 4.64041 10.0664 4.91357 9.80066L13.795 1.16229C14.0684 0.896414 14.0683 0.465328 13.795 0.199426Z"/>
@@ -114,6 +143,7 @@
                         </label>
                         <input type="radio" name="payment-info__subscription" :value="price[2].id"
                                v-model.number="subscription"
+                               @change="subListOpen = false"
                         >
                         <svg width="15" height="10" viewBox="0 0 15 10" fill="#FFFFFF">
                             <path d="M13.795 0.199426C13.5216 -0.0664754 13.0784 -0.0664754 12.805 0.199426L4.41859 8.35645L1.19499 5.22105C0.921634 4.95515 0.478447 4.95518 0.205037 5.22105C-0.0683456 5.48693 -0.0683456 5.91799 0.205037 6.18389L3.92362 9.80066C4.19689 10.0665 4.64041 10.0664 4.91357 9.80066L13.795 1.16229C14.0684 0.896414 14.0683 0.465328 13.795 0.199426Z"/>
@@ -130,6 +160,7 @@
                         </label>
                         <input type="radio" name="payment-info__subscription" :value="price[3].id"
                                v-model.number="subscription"
+                               @change="subListOpen = false"
                         >
                         <svg width="15" height="10" viewBox="0 0 15 10" fill="#FFFFFF">
                             <path d="M13.795 0.199426C13.5216 -0.0664754 13.0784 -0.0664754 12.805 0.199426L4.41859 8.35645L1.19499 5.22105C0.921634 4.95515 0.478447 4.95518 0.205037 5.22105C-0.0683456 5.48693 -0.0683456 5.91799 0.205037 6.18389L3.92362 9.80066C4.19689 10.0665 4.64041 10.0664 4.91357 9.80066L13.795 1.16229C14.0684 0.896414 14.0683 0.465328 13.795 0.199426Z"/>
@@ -138,11 +169,19 @@
 
                 </div>
             </div>
+            <button-complete-order
+                :isDisabled="!validSubscription || isValidUserForm || isBusy"
+                @click="createSubscription"
+            />
+            <div class="warning-container">
+                <template v-for="error in errorsRegister">
+                    <warning-message class="p-t-8" :message="error"/>
+                </template>
+            </div>
+            <payment-secure-info style="padding-top: 20px; color: white" />
 
         </div>
-        <user-payment
-                @click="createSubscription"
-        />
+
         <overlay-component v-if="isLoading || isBusy" />
 
         <div class="overlay" v-if="checkout">
@@ -159,14 +198,6 @@
             </div>
         </div>
     </div>
-    <div v-else>
-        <div>
-            <button-base
-                    :text="'GET MY WEEKLY PLAN'"
-                    @click="$emit('next')"
-            />
-        </div>
-    </div>
 </template>
 
 <script>
@@ -177,6 +208,7 @@
 
         data() {
             return {
+                subListOpen: false,
                 checked: 0,
                 isLoading: false,
                 subscription: 0,
@@ -321,6 +353,7 @@
         },
         computed: {
             ...mapGetters({
+                user: 'auth/user',
                 checkout: 'info/getCheckout',
                 userData: 'info/getUserData',
                 isBusy: 'info/getIsBusy',
@@ -331,6 +364,8 @@
                 initialGoal: 'params/getInitialGoal',
                 subscriptionPlan: 'info/getSubscriptionPlan',
                 subscriptionStatus: 'auth/getSubscriptionStatus',
+                isValidUserForm: 'info/getIsValidUserForm',
+                errorsRegister: 'info/getErrorsRegister',
             }),
             computedShowWarningMessage() {
                 return !!this.errors.length;
@@ -346,6 +381,13 @@
 
                     return 'SALE '+ this.discount.set.value + symbol;
                 }
+            },
+            validSubscription() {
+                if (this.subscription == 0) {
+                    return undefined;
+                }
+
+                return this.price.filter( p => p.id == this.subscription)[0];
             }
         },
         methods: {
@@ -450,7 +492,7 @@
                 this.clearErrorsRegister()
 
                 let finaly = true,
-                    action = this.verification ? '/api/subscription/create' : '/api/subscription/renew-check',
+                    action = this.verification ? '/api/subscription/create' : '/api/subscription/create-check',
                     data = {
                         number: this.userInfo.number.replace(/ /g, ''),
                         exp_year: this.userInfo.exp_year,
@@ -511,24 +553,93 @@
 </script>
 
 <style scoped lang="scss">
-    .create-subscription {
+    .subscription-button {
+        border: 1px solid var(--grey);
+        border-radius: 7px;
+        padding: 10px;
+        background: var(--white);
+        color: var(--black);
+        margin-bottom: 37px;
         display: flex;
-        flex-direction: row;
-        max-width: 980px;
+        align-items: center;
+        width: 100%;
+
+        &__arrow-icon {
+            margin-right: 10px;
+            border-radius: 50%;
+            width: 29px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 29px;
+            background: #FFFFFF;
+            box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);
+        }
+    }
+    .create-subscription {
+        font-family: Arial;
+        padding: 160px 30px 120px 30px;
+        // min-height: 100vh;
+
+        @media screen and (max-width: 767px) {
+            padding: 90px 20px;
+        }
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
         @media screen and (max-width: 767px) {
             flex-direction: column;
         }
 
+
+        &__txt {
+            text-align: center;
+
+            &__capital {
+                text-transform: uppercase;
+            }
+            &__welcome {
+                font-size: 28px;
+                font-weight: 600;
+                line-height: 132%;
+                padding-bottom: 40px;
+                @media screen and (max-width: 767px) {
+                    font-size: 24px;
+                }
+            }
+            &__info {
+                font-size: 40px;
+                font-weight: 800;
+                line-height: 100%;
+                padding-bottom: 20px;
+                @media screen and (max-width: 767px) {
+                    font-size: 30px;
+                }
+            }
+            &__small {
+                font-size: 24px;
+                font-weight: 500;
+                line-height: 132%;
+                padding-bottom: 20px;
+                @media screen and (max-width: 767px) {
+                    font-size: 20px;
+                }
+            }
+        }
+
         &__info {
-            margin-right: 120px;
+            max-width: 480px;
+            //margin-right: 120px;
 
             @media screen and (min-width: 768px) and (max-width: 991px) {
-                margin-right: 60px;
+                //margin-right: 60px;
             }
 
             @media screen and (max-width: 767px) {
-                margin-right: 0px;
+                //margin-right: 0px;
             }
         }
     }
@@ -565,6 +676,7 @@
     .payment-info {
         display: flex;
         flex-direction: column;
+        align-items: center;
 
         &__row, &__name, &__email, &__password, &__phone {
             display: flex;
@@ -579,6 +691,9 @@
             border: 1px solid var(--grey);
             border-radius: 7px;
             padding: 10px;
+            background: var(--white);
+            color: var(--black);
+            margin-bottom: 37px;
 
         }
         &__subscription {
@@ -664,80 +779,13 @@
                 }
                 & .fire{
                     margin-left: 10px;
+                    margin-right: 10px;
                 }
-            }
-        }
-
-        &__name {
-            margin-bottom: 25px;
-
-            &__first, &__last {
-                flex-basis: 50%;
-            }
-
-            &__first {
-                margin-right: 16px;
-
-                @media screen and (max-width: 991px) {
-                    margin-right: 0px;
-                    margin-bottom: 25px;
-                }
-            }
-        }
-
-        &__email {
-            //margin-bottom: 25px;
-
-            &__enter, &__confirm {
-                flex-basis: 50%;
-            }
-
-            &__enter {
-                margin-right: 16px;
-
-                @media screen and (max-width: 991px) {
-                    margin-right: 0px;
-                    //margin-bottom: 25px;
-                }
-            }
-
-        }
-
-        &__password {
-            //margin-bottom: 25px;
-
-            &__enter, &__confirm {
-                flex-basis: 50%;
-            }
-
-            &__enter {
-                margin-right: 16px;
-
-                @media screen and (max-width: 991px) {
-                    margin-right: 0px;
-                    //margin-bottom: 25px;
-                }
-            }
-        }
-
-        &__phone {
-            margin-bottom: 37px;
-
-            .vue-phone-number-input {
-                max-width: 330px;
-
-                @media screen and (max-width: 1200px) {
-                    max-width: unset;
-                }
-            }
-
-            @media screen and (max-width: 1200px) {
-                margin-bottom: 57px;
             }
         }
 
         &__card {
-            max-width: 330px;
+            // max-width: 330px;
             margin-bottom: 20px;
 
             @media screen and (max-width: 1200px) {
@@ -760,7 +808,7 @@
             }
 
             &__period {
-                max-width: 160px;
+                // max-width: 160px;
                 margin-right: 20px;
             }
 
@@ -773,7 +821,7 @@
             display: flex;
             flex-direction: row;
             &__number {
-                min-width: 330px;
+                min-width: 200px;
                 margin-right: 16px;
 
                 @media screen and (max-width: 1200px) {

@@ -6,10 +6,12 @@ use App\CouponCode;
 use App\CouponSet;
 use App\Exceptions\Error;
 use App\Exceptions\PaymentException;
+use App\Helpers\PlannerStaticHelper;
 use App\Http\Requests\RenewSubscription;
 use App\Mail\SubscriptionCancelled;
 use App\Mail\SubscriptionCreated;
 use App\Mail\SubscriptionRenew;
+use App\Planner;
 use App\SubscriptionPlan;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -199,12 +201,11 @@ class SubscriptionController extends Controller
      * Renew subscription.
      *
      * @param RenewSubscription $request
-     * @param bool $renew
      * @return Response
      * @throws ApiErrorException
      * @throws PaymentException
      */
-    public function renew(RenewSubscription $request, $renew = true)
+    public function renew(RenewSubscription $request)
     {
         $user   = Auth::user();
         $stripe = new StripeClient(env('STRIPE_API_KEY'));
@@ -276,19 +277,51 @@ class SubscriptionController extends Controller
             throw new PaymentException($exception->getMessage(), 422);
         }
 
-        if ($renew) {
-            Mail::to($user->email)->send(new SubscriptionRenew($user));
-            $message = 'Subscription successfully renewed!';
-        } else {
-            Mail::to($user->email)->send(new SubscriptionCreated($user));
-            $message = 'Subscription successfully created!';
-        }
+
+        Mail::to($user->email)->send(new SubscriptionCreated($user));
+        $message = 'Subscription successfully created!';
 
         return response([
             'done'    => true,
             'result'  => 'success',
             'message' => $message,
         ]);
+    }
+
+    public function check(RenewSubscription $request) {
+        $user   = Auth::user();
+        $stripe = new StripeClient(env('STRIPE_API_KEY'));
+
+        try {
+            $paymentMethods = $stripe->paymentMethods->create([
+                'type' => 'card',
+                'card' => $request->only([
+                    'number', 'exp_month', 'exp_year', 'cvc'
+                ])
+            ]);
+
+            $customers = $stripe->customers->create([
+                'name' => $user->name .' '. $user->last_name,
+                'email' => $user->email,
+            ]);
+
+            $intents = $stripe->setupIntents->create([
+                'customer' => $customers->id
+            ]);
+
+            $response = $stripe->setupIntents->confirm($intents->id, [
+                'payment_method' => $paymentMethods->id,
+                'return_url'     => url('pending-verification')
+            ]);
+
+            return response([
+                'action' => $response->next_action,
+                'result' => $response->status,
+                'id'     => $response->id
+            ]);
+        } catch (InvalidRequestException $exception) {
+            throw new PaymentException($exception->getMessage(), 422);
+        }
     }
 
     public function create(RenewSubscription $request)
@@ -305,7 +338,7 @@ class SubscriptionController extends Controller
                     'message' => 'It\'s impossible to connect this card to your account. Please use another card and try again.'
                 ];
             } else {
-//                $set    = $this->coupon ? $this->coupon->set : CouponSet::default()->first();
+                $trial  = $this->subscription->getData('trial');
                 $coupon = CouponCode::where('code', $request->coupon)->first();
                 if ($coupon) {
                     $coupon->user_id = $user->id;
@@ -313,9 +346,6 @@ class SubscriptionController extends Controller
                     $set   = $coupon ? $coupon->set : CouponSet::default()->first();
                     $now   = now();
                     $trial = $set->type === 'month' ? $this->subscription->getData('trial') + $set->value * 30 : 0;
-                }
-                else{
-                    $trial  = $this->subscription->getData('trial');
                 }
 
                 $subscriptionPlan = SubscriptionPlan::find($request->subscription);
@@ -339,11 +369,12 @@ class SubscriptionController extends Controller
                     ]);
 
                     $user->subscription->payment_method = $intents->payment_method;
+                    $user->subscription->customer_id = $intents->customer;
                     $user->subscription->subscription_plan_id = $subscriptionPlan->id;
                     $user->subscription->subscription_id = $response->id;
                     $user->subscription->ending = $ending;
+                    $user->subscription->start = $start;
                     $user->subscription->paid = (bool)$trial;
-//                    $user->subscription->paid = $user->subscription->paid == 2 ;
                     $user->subscription->save();
 
 
