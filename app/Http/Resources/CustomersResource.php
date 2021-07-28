@@ -18,7 +18,12 @@ class CustomersResource extends JsonResource
         $toArray = parent::toArray($request);
         $toArray['activated'] = $this->activated_at !== null;
         $toArray['created_at'] = $this->created_at;
-        $toArray['billed_at'] = $this->subscription()->first()->start->format('Y-m-d H:i:s');
+        $start = $this->subscription()->first()->start;
+        if ($start) {
+            $toArray['billed_at'] = $start->format('Y-m-d H:i:s');
+        } else {
+            $toArray['billed_at'] = null;
+        }
         $toArray['paid'] = $this->getPaidStrings();
         $toArray['id'] = $this->id;
 
