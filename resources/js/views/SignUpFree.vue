@@ -22,7 +22,7 @@
             return {
                 currentStep: 0,
                 currentStepText: 'Signup',
-                currentStepDescription: 'Create FREE account'
+                currentStepDescription: 'Create a FREE account'
             }
         }
     }
@@ -66,8 +66,7 @@
             margin-bottom: 46px;
 
             @media screen and (max-width: 600px) {
-                margin-bottom: 6px;
-                font-size: 24px !important;
+                margin-bottom: 36px;
             }
         }
     }

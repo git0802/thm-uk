@@ -6,8 +6,8 @@
                     class="enter-details__gender"
                     :name="'gender'"
                     :options="['Male', 'Female']"
-                    :placeHolder="'Gender'"
-                    :errorMessage="'*Gender'"
+                    :placeHolder="'Choose your gender'"
+                    :errorMessage="'*Choose your gender'"
                     :disabled="false"
                     :preselect-value="params.gender"
                     @validation="validationSelectParam"
@@ -15,10 +15,10 @@
                 <input-user-params
                     class="enter-details__age"
                     :name="'age'"
-                    :placeHolder="'Age'"
+                    :placeHolder="'Enter your age'"
                     :minValue="12"
                     :maxValue="120"
-                    :errorMessage="'*Age from 12 to 120'"
+                    :errorMessage="'*Enter age from 12 to 120'"
                     :init-value="params.age"
                     @validation="validationParam"
                 />
@@ -179,19 +179,17 @@
             margin-right: 20px;
 
             @media screen and (max-width: 600px) {
-                margin-right: 10px;
+                margin-right: 0px;
                 margin-bottom: 20px;
             }
         }
 
-        &__weight {
-            @media screen and (max-width: 600px) {
-                margin-right: 0px !important;
-            }
-        }
-
-        &__age, &__heightCM {
+        &__age {
             flex-basis: 50%;
+
+            @media screen and (max-width: 600px) {
+                margin-bottom: 20px;
+            }
         }
     }
 
