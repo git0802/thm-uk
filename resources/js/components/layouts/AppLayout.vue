@@ -2,7 +2,7 @@
     <div class="container">
         <nav-bar/>
         <slot/>
-        <app-footer v-if="!hideFooter"/>
+        <app-footer/>
         <g-d-p-r/>
         <notifications group="planner" classes="n-light" position="bottom right"/>
 
@@ -15,13 +15,7 @@
 
     export default {
         name: "AppLayout",
-        components: {GDPR},
-        props: {
-            hideFooter: {
-                type: Boolean,
-                default: false
-            }
-        }
+        components: {GDPR}
     }
 </script>
 

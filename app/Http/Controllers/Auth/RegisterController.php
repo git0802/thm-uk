@@ -114,31 +114,44 @@ class RegisterController extends Controller
      */
     private function saveUser($subscription)
     {
-        $this->user = User::make($this->request->all());
-        $this->user->password = Hash::make($this->user->password);
-        $this->user->activation_token = Str::random(50);
-        $this->user->goal = $this->request->initial_goal;
-        $this->user->save();
+        try {
+            $trial  = $subscription->getData('trial');
+            $start  = now()->addDays($trial);
+            $ending = now()->addDays($trial);
 
-        $this->payment = Subscription::make([
-            'subscription_plan_id' => null,
-            'subscription_id' => null,
-            'payment_method'  => null,
-            'customer_id'     => null,
-            'user_id'         => $this->user->id,
-            'start'           => null,
-            'ending'          => null,
-            'paid'            => 0,
-        ]);
+            $this->user = User::make($this->request->all());
+            $this->user->password = Hash::make($this->user->password);
+            $this->user->activation_token = Str::random(50);
+            $this->user->goal = $this->request->initial_goal;
+            $this->user->save();
 
-        $this->payment->save();
+            $customers = $this->stripe->customers->create([
+                'name' => $this->user->name .' '. $this->user->last_name,
+                'email' => $this->user->email,
+            ]);
 
-        Mail::to($this->user->email)->send(new ActivateUser($this->user));
+            $this->payment = Subscription::make([
+                'subscription_plan_id' => null,
+                'subscription_id' => null,
+                'payment_method'  => null,
+                'customer_id'     => $customers->id,
+                'user_id'         => $this->user->id,
+                'start'           => $start,
+                'ending'          => $ending,
+                'paid'            => (bool)$trial,
+            ]);
 
-        return [
-            'done'    => true,
-            'result'  => 'success',
-            'message' => 'Please, confirm your email to continue.'
-        ];
+            $this->payment->save();
+
+            Mail::to($this->user->email)->send(new ActivateUser($this->user));
+
+            return [
+                'done'    => true,
+                'result'  => 'success',
+                'message' => 'Please, confirm your email to continue.'
+            ];
+        } catch (InvalidRequestException $exception) {
+            throw new PaymentException($exception->getMessage(), 422);
+        }
     }
 }

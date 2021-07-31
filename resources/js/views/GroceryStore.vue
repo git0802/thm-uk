@@ -1,11 +1,7 @@
 <template>
     <div class="no-copy" id="no-copy" style="overflow: auto;height: 100vh;">
-
-        <app-layout :style="{ 'filter': filterValue }" hide-footer="showPaymentWindow || (subscriptionStatus && !subscriptionStatus.subscription)">
-            <div v-if="showPaymentWindow || (subscriptionStatus && !subscriptionStatus.subscription)" class="payment-details-bg">
-                <payment-details @next="finishUserSetup"></payment-details>
-            </div>
-            <main class="grocery-store" v-else>
+    <app-layout :style="{ 'filter': filterValue }">
+            <main class="grocery-store">
                 <stepper
                     v-if="router_path == '/store'"
                     class="steps-container__stepper"
@@ -84,7 +80,17 @@
 
                     <review-list
                         v-if="currentStep == 2"
+                        @next="nextStep"
+                        :text="'NEXT STEP'"
+                        next
                     />
+
+                    <div v-if="currentStep == 3">
+                        <app-caption class="m-b-16"
+                                     :title="'Start your free trial'"
+                        />
+                        <payment-details @next="finishUserSetup"></payment-details>
+                    </div>
 
 
                 </div>
@@ -116,7 +122,6 @@ export default {
     components: {DragDrop, ModalReviewList, ModalStore, Container, UserPic},
     data() {
         return {
-            showPaymentWindow: false,
             tryToSave: false,
             currentStep: 0,
             router_path: this.$route.path,
@@ -145,7 +150,6 @@ export default {
             validation: 'planner/getValidation',
             notValidDays: 'planner/getNotValidationDays',
             plannerId: 'planner/getPlannerId',
-            subscriptionStatus: 'auth/getSubscriptionStatus',
         }),
         filterValue() {
             return this.activeModals.length ? 'blur(4px)' : 'none';
@@ -189,10 +193,7 @@ export default {
                     this.$store.commit('planner/setCaloriesGoal', res.data.data.calories_goal)
                     this.$store.commit('planner/setGoal', res.data.data.goal)
                 } catch (error) {
-                    console.log(error.response)
-                    if (error.response.status == 402) {
-                        this.showPaymentWindow = true;
-                    } else if (error.response.data.success == false) {
+                    if (error.response.data.success == false) {
                         window.location.href = '/meal-planner/settings'
                     }
                 }
@@ -202,6 +203,7 @@ export default {
         {
             try {
                 let res = await this.$http.post(`/api/planner/${this.plannerId}/finish`, {skip_setup: skip})
+                console.log(res);
                 if(res.data.success) {
                     // this.$notify({
                     //     group: 'planner',
@@ -220,9 +222,8 @@ export default {
         },
 
         async finishUserSetup() {
-            this.showPaymentWindow = false
-            await this.checkSubscriptionStatus()
-            await this.fetchGetInitial()
+            let status = await this.finishSetup(false)
+            window.location.href = '/meal-planner/planner/'
         },
 
         async nextStep() {
@@ -256,7 +257,6 @@ export default {
         },
         ...mapActions({
             actionsModal: 'modals/actionsModal',
-            checkSubscriptionStatus: 'auth/checkSubscriptionStatus',
         }),
     }
 }
@@ -264,27 +264,6 @@ export default {
 
 <style lang="scss">
 @import '../../sass/_mixins.scss';
-.payment-details-bg {
-    background: rgba(29, 10, 56, 0.68);
-    color: var(--white);
-    min-height: 100vh;
-}
-
-.payment-details-bg:before {
-    content: ' ';
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.6;
-    background: url('/images/bg_dashboard.png');
-    background-repeat: no-repeat;
-    background-position: 50% 0;
-    background-size: cover;
-    z-index: -1;
-}
 
 .no-copy {
     -webkit-user-select: none;

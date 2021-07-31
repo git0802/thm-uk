@@ -42,7 +42,7 @@
     .disabled {
         cursor: auto;
         pointer-events: none;
-        background: var(--primary);
+        background: var(--grey-2);
     }
 </style>
 
