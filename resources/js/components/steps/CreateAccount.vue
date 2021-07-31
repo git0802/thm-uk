@@ -36,8 +36,7 @@
 
 <style scoped lang="scss">
     .create-account {
-        display: flex;
-        justify-content: center;
+        max-width: 980px;
 
         @media screen and (max-width: 767px) {
             flex-direction: column;
