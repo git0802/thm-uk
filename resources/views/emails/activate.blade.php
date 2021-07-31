@@ -24,6 +24,46 @@
                             </td>
                         </tr>
 
+                            <tr style="margin-top: 30px;margin-bottom: 6px;display: block;">
+                                <td style="display: inline-block">
+                                    <span style="font-weight: 600;margin-right: 10px;">Free trial start date:</span>
+                                </td>
+                                <td style="display: inline-block;">
+                                    <span style="font-weight: 700;color: #ff667b;"> {{ now()->format('M. d, Y') }} </span>
+                                </td>
+                            </tr>
+                            <tr style="margin-bottom: 6px;display: block;">
+                                <td style="display: inline-block">
+                                    <span style="font-weight: 600;margin-right: 10px;">Subscription activation date:</span>
+                                </td>
+                                <td style="display: inline-block;">
+                                    <span style="font-weight: 700;color: #ff667b;"> {{ $user->subscription->start->format('M. d, Y') }} </span>
+                                </td>
+                            </tr>
+                            <tr style="margin-bottom: 6px;display: block;">
+                                <td style="display: inline-block">
+                                    <span style="font-weight: 600;margin-right: 10px;">Subscription renewal date:</span>
+                                </td>
+                                <td style="display: inline-block;">
+                                    <span style="font-weight: 700;color: #ff667b;"> {{ $user->subscription->ending->format('M. d, Y') }} </span>
+                                </td>
+                            </tr>
+                            <tr style="display: block;">
+                                <td style="display: inline-block">
+                                    <span style="font-weight: 600;margin-right: 10px;">{{$price['title']}} plan:</span>
+                                </td>
+                                <td style="display: inline-block;">
+                                    <span style="font-weight: 700;color: #ff667b;">{{ config('thehotmeal.currencySm') }}{{ $price['sale']['amount'] }}/{{$price['period']['interval']}} @if($price['sale']['value'])({{ $price['sale']['str'] }})! @endif</span>
+                                </td>
+                            </tr>
+
+
+                        <tr style="margin-top: 30px;display: block;">
+                            <td style="display: inline-block">
+                                <span style="font-size: 18px;margin-right: 10px;">You can cancel your subscription at any time from your settings.</span>
+                            </td>
+                        </tr>
+
                         <tr style="margin-top: 40px;display: block;">
                             <td style="display: inline-block">
                                 <a href="{{ url("activate-account/" . $user->activation_token) }}" style="background: #df2c65;color: #fff;width: 240px;display: inline-block;height: 50px;line-height: 48px;border-radius: 7px;font-size: 18px;">Activate your account</a>

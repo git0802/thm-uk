@@ -29,24 +29,6 @@ class ActivateController extends Controller
         $user->activated_at = now();
         $user->save();
 
-        try {
-            $this->addToMailChimp($user);
-        } catch (\Exception $e) {
-            report($e);
-        }
-
-        return response([
-            'success' => true,
-            'message' => 'Your account successfully activated! You can login to your account now.'
-        ]);
-    }
-
-    /**
-     * @param $user
-     * @throws \Exception
-     */
-    private function addToMailChimp($user): void
-    {
         $MailChimp = new MailChimp(env('MAILCHIMP_API'));
         $result = $MailChimp->get('lists');
 
@@ -57,9 +39,14 @@ class ActivateController extends Controller
             'status' => 'subscribed',
             'tags' => [env('MAILCHIMP_TAG')],
             'merge_fields' => [
-                'FNAME' => $user->name,
-                'LNAME' => $user->last_name
+                'FNAME' =>  $user->name,
+                'LNAME' =>  $user->last_name
             ]
+        ]);
+
+        return response([
+            'success' => true,
+            'message' => 'Your account successfully activated! You can login to your account now.'
         ]);
     }
 }
