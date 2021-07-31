@@ -102,7 +102,7 @@
 
             <div style="display: flex; flex-direction: row; justify-content: center;">
                 <button-next
-                        :text="'REGISTER'"
+                        :text="'START FREE TRIAL'"
                         :isDisabled="!isValidUserForm || isBusy"
                         @click="registerUser()"
                 />
