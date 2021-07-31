@@ -1,7 +1,7 @@
 <template>
     <div class="enter-details">
         <form>
-            <div class="enter-details__row-gender m-b-24">
+            <div class="enter-details__row m-b-24">
                 <select-params
                     class="enter-details__gender"
                     :name="'gender'"
@@ -156,16 +156,6 @@
             }
         }
 
-        &__row-gender {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-
-            @media screen and (max-width: 600px) {
-                flex-direction: row;
-            }
-        }
-
         &__gender {
             .v-select {
                 .vs__selected, .vs__search {
@@ -180,15 +170,15 @@
 
             @media screen and (max-width: 600px) {
                 margin-right: 0px;
-                margin-bottom: 20px;
+                margin-bottom: 25px;
             }
         }
 
-        &__age {
+        &__age, &__heightCM {
             flex-basis: 50%;
 
             @media screen and (max-width: 600px) {
-                margin-bottom: 20px;
+                margin-bottom: 25px;
             }
         }
     }

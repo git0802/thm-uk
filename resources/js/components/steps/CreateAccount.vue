@@ -6,6 +6,8 @@
             />
         </div>
         <overlay-component v-if="isLoading" />
+
+        <section-testimonials />
     </div>
 </template>
 
