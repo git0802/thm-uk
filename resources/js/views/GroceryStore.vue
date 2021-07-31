@@ -81,16 +81,7 @@
                     <review-list
                         v-if="currentStep == 2"
                         @next="nextStep"
-                        :text="'NEXT STEP'"
-                        next
                     />
-
-                    <div v-if="currentStep == 3">
-                        <app-caption class="m-b-16"
-                                     :title="'Start your free trial'"
-                        />
-                        <payment-details @next="finishUserSetup"></payment-details>
-                    </div>
 
 
                 </div>
@@ -134,9 +125,6 @@ export default {
                 },
                 {
                     content: '03',
-                },
-                {
-                    content: '04',
                 }
             ]
         }
@@ -199,10 +187,10 @@ export default {
                 }
             }
         },
-        async finishSetup(skip)
+        async finishSetup()
         {
             try {
-                let res = await this.$http.post(`/api/planner/${this.plannerId}/finish`, {skip_setup: skip})
+                let res = await this.$http.post(`/api/planner/${this.plannerId}/finish`)
                 console.log(res);
                 if(res.data.success) {
                     // this.$notify({
@@ -220,20 +208,12 @@ export default {
             }
 
         },
-
-        async finishUserSetup() {
-            let status = await this.finishSetup(false)
-            if(status) {
-                window.location.href = '/meal-planner/planner/'
-            }
-        },
-
         async nextStep() {
             if (this.currentStep == 1) {
                 if (!this.validation.is_valid) {
                     this.tryToSave = true;
                 } else {
-                    let status = await this.finishSetup(true)
+                    let status = await this.finishSetup()
                     if(status) {
                         this.currentStep++
                         window.scrollTo(0, 0)

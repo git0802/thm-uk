@@ -83,15 +83,8 @@ class PlannerController extends Controller
         $validator = PlannerStaticHelper::nestedValidation($planner);
 
         if($validator['is_valid']) {
-            if ($request->has('skip_setup') && $request->get('skip_setup')) {
-                if ($user->subscription && $user->checkPaid() && $user->subscription->payment_method) {
-                    $user->finished_setup = true;
-                    $user->save();
-                }
-            } else {
-                $user->finished_setup = true;
-                $user->save();
-            }
+            $user->finished_setup = true;
+            $user->save();
 
             return response([
                 'success' => true,

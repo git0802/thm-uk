@@ -77,7 +77,6 @@ Route::prefix('subscription')->group(static function () {
     Route::get('price', 'SubscriptionController@defaultPrice');
     Route::post('cancel', 'SubscriptionController@cancel');
     Route::post('renew', 'SubscriptionController@renew');
-    Route::post('create', 'SubscriptionController@create');
     Route::post('renew-check', 'SubscriptionController@renewCheck');
 });
 

@@ -9,6 +9,6 @@ class GetController extends Controller
 {
     public function price(SubscriptionRepository $subscription)
     {
-        return response( SubscriptionPlan::orderBy('months')->get() );
+        return response( SubscriptionPlan::all() );
     }
 }
