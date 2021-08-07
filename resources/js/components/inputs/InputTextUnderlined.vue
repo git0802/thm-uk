@@ -1,14 +1,12 @@
 <template>
-    <div class="input-container">
-        <div class="input-container__data" :class="{ 'error' : computedValidationState === 2, 'correct': computedValidationState === 1 }">
-            <input class="input-container__entry"
-                type="tel"
-                ref="input"
-                :placeholder="inputPlaceHolder"
-                :disabled="isDisabled"
-                v-model="inputData"
-                v-mask="maskCode"
-                @blur="updateValue"
+    <div class="underlined_input-container">
+        <div style="flex: none">{{inputPlaceHolder}}</div>
+        <div class="underlined_input-container__data" :class="{ 'error' : computedValidationState === 2, 'correct': computedValidationState === 1 }">
+            <input class="underlined_input-container__entry"
+                   type="text"
+                   :disabled="isDisabled"
+                   v-model="inputData"
+                   @blur="updateValue"
             />
             <button-input-state
                 :state="computedValidationState"
@@ -19,10 +17,13 @@
 </template>
 
 <script>
-    import { mask } from 'vue-the-mask'
+    import ButtonInputState from "../buttons/ButtonInputState"
 
     export default {
-        directives: { mask },
+        name: "InputTextUnderlined",
+        components: {
+            ButtonInputState
+        },
         props: {
             placeHolder: {
                 type: String,
@@ -43,20 +44,22 @@
                 required: true,
                 default: 0
             },
-            maskCode: {
+            initValue: {
                 type: String,
-                required: true,
+                required: false,
                 default: ''
             }
         },
         data() {
             return {
                 inputData: '',
-                inputPlaceHolder: '',
+                inputPlaceHolder: ''
             }
         },
         created() {
             this.inputPlaceHolder = this.placeHolder;
+
+            this.setInitValue(this.initValue);
         },
         methods: {
             updateValue() {
@@ -65,6 +68,12 @@
             clear() {
                 this.inputData = '';
             },
+            setInitValue(value) {
+                if (value) {
+                    this.inputData = value;
+                    this.updateValue();
+                }
+            }
         },
         computed: {
             computedValidationState() {
@@ -75,41 +84,48 @@
                 }
 
                 return this.validationState;
-            }
+            },
         }
     }
 </script>
 
 <style scoped lang="scss">
-    @import '../../../sass/_mixins.scss';
 
-    .input-container {
-        @include base-font;
+    .underlined_input-container {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: flex-end;
+        font-family: Lato;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 22px;
+        color: #272C32;
+
+        @media screen and (max-width: 600px) {
+            font-size: 14px !important;
+            line-height: 17px !important;
+        }
 
         &__data {
+            margin-left: 10px;
             position: relative;
-            background: #F9F9F9;
-            padding: 9px 45px 8px 20px;
-            border-radius: 7px;
-            border: 1px solid #B6B6B6;
+            padding: 9px 25px 1px 0px;
+            border-bottom: 1px solid #B6B6B6;
+            width: 100%;
 
             &.error {
-                border: 1px solid var(--red);
-                background: var(--red-light);
+                border-bottom: 1px solid var(--red);
                 transition: 400ms;
             }
 
             &.correct {
-                border: 1px solid var(--green);
-                background: var(--green-light);
+                border-bottom: 1px solid var(--green);
                 transition: 400ms;
             }
         }
 
         &__entry {
-
             width: 100%;
             background: transparent;
 
@@ -118,7 +134,6 @@
             }
 
             &::placeholder {
-                /*Recommended write this for FireFox*/
                 opacity: 1;
 
                 .error & {

@@ -72,7 +72,7 @@
                 || window.location.pathname === '/meal-planner/setup'
                 || window.location.pathname === '/meal-planner/planner/'
                 || window.location.pathname === '/store'){
-                    
+
                 this.setInitValue(this.user.weight)
             }
         },
@@ -141,6 +141,7 @@
     @import '../../../sass/_mixins.scss';
 
     .input-container {
+        @include base-font;
         display: flex;
         flex-direction: column;
 
@@ -165,18 +166,15 @@
         }
 
         &__entry {
-            @include base-font;
 
             width: 100%;
             background: transparent;
-            color: var(--black);
 
             .error & {
                 color: var(--red);
             }
 
             &::placeholder {
-                color: var(--black);
                 /*Recommended write this for FireFox*/
                 opacity: 1;
 

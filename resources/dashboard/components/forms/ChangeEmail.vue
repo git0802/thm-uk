@@ -123,7 +123,7 @@ export default {
                     email: this.form.confirm_email.value
                 })
                 this.loading = false;
-                this.$store.commit('auth/user', res.data.user)
+                this.$store.commit('auth/userInfo', res.data.user)
                 this.message = res.data.message
                 this.$notify({
                     group: 'planner',

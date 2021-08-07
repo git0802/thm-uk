@@ -48,7 +48,7 @@ import IconError from "../../../js/components/svg/IconError";
 <style lang="scss">
     .input-state {
       position: absolute;
-      right: 14px;
+      right: 5px;
       top: 33%;
       z-index: 5;
         .correct {

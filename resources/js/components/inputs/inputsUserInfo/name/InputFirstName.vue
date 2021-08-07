@@ -1,7 +1,7 @@
 <template>
-    <input-text
-        :placeHolder="'First name'"
-        :errorMessage="'*First name'"
+    <input-text-underlined
+        :placeHolder="'Name'"
+        :errorMessage="'*Name'"
         :validationState="validationState"
         @validation="validationData"
     />

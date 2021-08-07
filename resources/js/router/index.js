@@ -2,7 +2,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Login";
-import SignUpFree from "../views/SignUpFree";
+import SignUpCombined from "../views/SignUpCombined";
 import GroceryStore from "../views/GroceryStore";
 import Landing from "../views/Landing";
 import Policy from "../views/Policy";
@@ -32,7 +32,7 @@ const routes = [
     {
         path: "/signup",
         name: "SignUp",
-        component: SignUpFree,
+        component: SignUpCombined,
         beforeEnter(to, from, next) {
             if (store.getters['auth/authenticated']) {
                 window.location = '/meal-planner';

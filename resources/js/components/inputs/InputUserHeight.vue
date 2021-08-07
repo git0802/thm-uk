@@ -13,11 +13,11 @@
     </div>
     <div class="heightFieldDouble" v-else>
         <base-input
-            v-bind:class="[className, 'heightFieldFt m-r-15']"
+            v-bind:class="[className, 'heightFieldFt m-r-15 mr-10']"
             v-model="form.heightFt.value"
             @focus="onFocusCallback"
             :name="'heightFt'"
-            :placeHolder="'ft'"
+            :placeHolder="'Height (ft)'"
             :errorMessage="form.heightFt.validation.message"
             :validation-callback="validationCallback"
             :validation-state="form.heightFt.validation.validated"
@@ -27,7 +27,7 @@
             v-model="form.heightIn.value"
             @focus="onFocusCallback"
             :name="'heightIn'"
-            :placeHolder="'in'"
+            :placeHolder="'Height (in)'"
             :errorMessage="form.heightIn.validation.message"
             :validation-callback="validationCallback"
             :validation-state="form.heightIn.validation.validated"

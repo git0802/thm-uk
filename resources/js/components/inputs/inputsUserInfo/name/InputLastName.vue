@@ -1,5 +1,5 @@
 <template>
-    <input-text
+    <input-text-underlined
         :placeHolder="'Last name'"
         :errorMessage="'*Last name'"
         :validationState="validationState"

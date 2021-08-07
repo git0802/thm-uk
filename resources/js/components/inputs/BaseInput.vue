@@ -161,6 +161,9 @@ export default {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
+    @media screen and (max-width: 600px) {
+        margin-bottom: 16px;
+    }
     &__data {
         position: relative;
         background: #F9F9F9;
@@ -208,7 +211,6 @@ export default {
         }
 
         &::placeholder {
-            color: var(--black);
             /*Recommended write this for FireFox*/
             opacity: 1;
 
@@ -234,6 +236,12 @@ export default {
 
     :focus {
         outline: none;
+    }
+
+    .pr-5 {
+        @media screen and (max-width: 991px) {
+            padding-right: 5px !important;
+        }
     }
 }
 </style>

@@ -31,13 +31,13 @@
 <style scoped lang="scss">
     @import '../../../sass/_mixins.scss';
     input:disabled {
-        -webkit-text-fill-color:var(--black);
+        // -webkit-text-fill-color:var(--black);
         -webkit-opacity:1;
-        color: var(--black);
     }
     .input-container {
         display: flex;
         flex-direction: column;
+        @include base-font;
 
         &__data {
             position: relative;
@@ -54,9 +54,7 @@
         }
 
         &__entry {
-            @include base-font;
             -webkit-text-fill-color: inherit;
-            color: var(--black);
             width: 100%;
             background: transparent;
         }

@@ -92,7 +92,11 @@ const actions = {
         }
     },
     async storeUserData({ commit }, data) {
-        commit('user', data);
+        if (data.user) {
+            commit('user', data);
+        } else {
+            commit('userInfo', data);
+        }
     },
     async authenticate({ commit }, {data, http}) {
         return await http.post('/api/login', {

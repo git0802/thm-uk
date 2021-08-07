@@ -14,10 +14,18 @@
 </script>
 
 <style scoped lang="scss">
-    @import '../../../../sass/_mixins.scss';
 
     .secure {
-        @include head-font;
+        font-family: Lato;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 17px;
+
+        letter-spacing: 0.02em;
+        color: #272C32;
+        opacity: 0.67;
+
         text-align: center;
         margin-top: 8px;
 
@@ -27,7 +35,6 @@
             justify-content: center;
             align-items: center;
             /*For vertical alignment*/
-            line-height: 12px;
         }
 
         svg {
@@ -35,9 +42,8 @@
         }
 
         &__text {
-            @include base-font;
-
-            margin-top: 3px;
+            font-size: 12px;
+            line-height: 14px;
         }
     }
 </style>

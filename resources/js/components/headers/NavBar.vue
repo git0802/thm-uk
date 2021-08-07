@@ -1,7 +1,7 @@
 <template>
         <div
             class="nav-bar nav-bar__wrapper"
-            :class="[classSignin, {'nav-bar__wrapper--sticky': stickNav, 'nav-bar__wrapper--menu-opened': menu}]"
+            :class="[classSignin, {'nav-bar__wrapper--sticky': navWhite || stickNav, 'nav-bar__wrapper--menu-opened': menu}]"
             :style="getNavStyle" >
             <div class="nav-bar__container wrapper">
                 <div class="brand"  @click="routerPush">
@@ -77,6 +77,12 @@ import {mapGetters} from "vuex";
 
 export default {
         name: "NavBar",
+        props: {
+            navWhite: {
+                type: Boolean,
+                default: false
+            }
+        },
         data: function() {
             return {
                 last_scroll_pos: null,
