@@ -750,7 +750,7 @@
         padding-top: 8px;
     }
     .signup {
-        background-image: url('/images/signup_bg.png');
+        background-image: url('/images/sign-up-bg-desktop.png');
         min-height: calc(100vh - 99px);
         background-size: cover;
 
