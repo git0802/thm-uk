@@ -2,6 +2,7 @@
     <app-layout nav-white hide-footer>
         <div class="signup">
             <div class="signup__bg">
+                <img src="/images/sign-up-bg-desktop.png" class="signup__desktop__bg" alt="SignUp">
                 <div class="signup__container">
                     <div style="padding: 10px; display: flex; flex-direction: column; align-items: center;">
                         <div class="signup__text">
