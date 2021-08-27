@@ -749,7 +749,7 @@
         padding-top: 8px;
     }
     .signup {
-        background-image: url('/images/sign-up-bg-desktop.png');
+        //background-image: url('/images/sign-up-bg-desktop.png');
         min-height: calc(100vh - 99px);
         background-size: cover;
 
@@ -1269,17 +1269,17 @@
             line-height: 14px !important;
         }
     }
-    @media(min-width:1025px){
+    @media screen and(min-width:1025px){
             .signup {
                 background-image: url('/images/signup-desktop-background1x.jpg');
             }
     }
-    @media(max-width:1025px) and (min-width:769px){
+    @media screen and(max-width:1025px) and (min-width:769px){
             .signup {
                 background-image: url('/images/signup-tablet-background1x.jpg');
             }
     }
-    @media(max-width:768px){
+    @media screen and(max-width:768px){
             .signup {
                 background-image: url('/images/signup-mobile-background1x.jpg');
             }
