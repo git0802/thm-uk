@@ -754,13 +754,13 @@
         background-size: cover;
 
         &__bg {
-            background: linear-gradient(138.61deg, rgba(0, 0, 0, 0.21) -6.29%, rgba(0, 0, 0, 0.49) 28.27%, rgba(113, 48, 120, 0.59) 57.06%, #5A2A79 105.21%);
+            // background: linear-gradient(138.61deg, rgba(0, 0, 0, 0.21) -6.29%, rgba(0, 0, 0, 0.49) 28.27%, rgba(113, 48, 120, 0.59) 57.06%, #5A2A79 105.21%);
             min-height: calc(100vh - 99px);
 
-            @media screen and (max-width: 991px) {
-                background: linear-gradient(180deg, #C84676 0%, #993A77 43.23%, #713078 73.44%, #5A2A79 100%);
-                // opacity: 0.95;
-            }
+            // @media screen and (max-width: 991px) {
+            //     background: linear-gradient(180deg, #C84676 0%, #993A77 43.23%, #713078 73.44%, #5A2A79 100%);
+            //     // opacity: 0.95;
+            // }
         }
 
         &__container {
@@ -1268,5 +1268,20 @@
             font-size: 12px !important;
             line-height: 14px !important;
         }
+    }
+    @media(min-width:1025px){
+            .signup {
+                background-image: url('/images/signup-desktop-background1x.jpg');
+            }
+    }
+    @media(max-width:1025px) and (min-width:769px){
+            .signup {
+                background-image: url('/images/signup-tablet-background1x.jpg');
+            }
+    }
+    @media(max-width:768px){
+            .signup {
+                background-image: url('/images/signup-mobile-background1x.jpg');
+            }
     }
 </style>
