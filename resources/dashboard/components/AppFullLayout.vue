@@ -19,6 +19,7 @@
         <modal-dish/>
         <modal-store/>
         <modal-weekly-goals/>
+        <modal-register/>
 
         <notifications group="planner" classes="n-light" position="bottom right"/>
         <!--modals end-->
@@ -35,6 +36,7 @@ import ModalDish from "../../js/components/modals/ModalDish/ModalDish";
 import ModalStore from "../../js/components/modals/ModalStore/ModalStore";
 import { mapGetters } from "vuex";
 import ModalWeeklyGoals from "../../js/components/modals/ModalWeeklyGoals/ModalWeeklyGoals";
+import ModalRegister from "../../js/components/modals/ModalRegister/ModalRegister";
 
 export default {
     name: "AppFullLayout",
@@ -46,7 +48,8 @@ export default {
         OverlayComponent,
         ModalFood,
         ModalDish,
-        ModalStore
+        ModalStore,
+        ModalRegister
     },
     computed: {
         ...mapGetters({

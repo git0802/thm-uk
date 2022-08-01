@@ -1,13 +1,18 @@
 <template>
         <div
             class="nav-bar nav-bar__wrapper"
-            :class="[classSignin, {'nav-bar__wrapper--sticky': navWhite || stickNav, 'nav-bar__wrapper--menu-opened': menu}]"
+            :class="[classSignin, {'nav-bar__wrapper--sticky': navWhite || stickNav, 'nav-bar__wrapper--menu-opened': menu, 'nav-bar__guest': $store.state.auth.guest && this.$route.path === '/store'}]"
             :style="getNavStyle" >
             <div class="nav-bar__container wrapper">
                 <div class="brand"  @click="routerPush">
-                    <the-hot-meal :svgHeight="'22px'" :svgWidth="'unset'" :textSize="'22px'" />
+                    <the-hot-meal-white v-if="$store.state.auth.guest && this.$route.path === '/store'" :svgHeight="'22px'" :svgWidth="'unset'" :textSize="'22px'" />
+                    <the-hot-meal v-else :svgHeight="'22px'" :svgWidth="'unset'" :textSize="'22px'" />
                 </div>
                 <div class="nav-links">
+                    <div class="guest-alert" v-if="$store.state.auth.guest && this.$route.path === '/store'">
+                        <span v-if="user">ALERT: This is a DUMMY version of the site based on a {{ user.height_in_feet }} male who’s {{ user.weight }} pounds. To customize for YOUR own weight goals, please
+                        <router-link :to="{name: 'SignUp'}" @click.native="close()" exact>sign up FREE</router-link>.</span>
+                    </div>
                     <div class="right-block">
                         <ul class="links" v-if="site_content">
 
@@ -35,7 +40,7 @@
                         </ul>
                     </div>
                     <div class="login-block">
-                        <div v-if="$store.state.auth.authenticated">
+                        <div v-if="$store.state.auth.authenticated && !$store.state.auth.guest">
                             <a class="auth__item auth__signup" href="/meal-planner">
                                 Go to MEAL PLANNER
                             </a>
@@ -67,6 +72,7 @@
                 <div></div>
                 <div></div>
             </div>
+            <guest-banner v-if="$store.state.auth.guest && this.$route.path === '/store'"/>
         </div>
 
 
@@ -74,8 +80,10 @@
 
 <script>
 import {mapGetters} from "vuex";
+import GuestBanner from "./GuestBanner";
 
 export default {
+        components: {GuestBanner},
         name: "NavBar",
         props: {
             navWhite: {
@@ -102,7 +110,8 @@ export default {
 
         computed: {
             ...mapGetters({
-                site_content: 'adminUi/getSiteContent'
+                site_content: 'adminUi/getSiteContent',
+                user: 'auth/user',
             }),
             stickNav() {
                 return this.current_scroll_pos > 2
@@ -121,7 +130,6 @@ export default {
 
                 return segment[1];
             },
-
         },
         methods: {
             routerPush() {
@@ -164,6 +172,33 @@ export default {
             background: white;
             border-color: #0000001c;
             box-shadow: -3px -15px 20px 0px #000000ba;
+        }
+        &__guest {
+            background-color: black !important;
+            .guest-alert {
+                color: white;
+                font-weight: normal;
+                padding-left: 20px;
+                text-align: center;
+                a {
+                  color: #B47EFB;
+                }
+            }
+            a.auth__login {
+                color: #FFFFFF !important;
+            }
+            .nav-bar__container .login-block a.auth__item.auth__signup {
+                background-color: #FFFFFF !important;
+                color: #000000 !important;
+                &:hover {
+                  background-color: #CCCCCC !important;
+                }
+            }
+            flex-wrap: wrap;
+            height: initial;
+            .nav-bar__container {
+                padding: 17px 25px;
+            }
         }
         &__wrapper {
             position: relative;
@@ -414,6 +449,9 @@ export default {
         img.nav-bar__mob-girl, .nav-bar__mob-footer {
             display: none;
         }
+        .nav-bar__guest .nav-links .right-block{
+            display: none;
+        }
     }
 
     @media screen and (max-width: 980px) {
@@ -422,11 +460,21 @@ export default {
             border-color: #0000001c;
             box-shadow: -3px -15px 20px 0px #000000ba;
             background: #fff;
+
+            &__guest {
+                 height: initial;
+                .nav-bar__container .nav-links {
+                    top: 60px;
+                }
+            }
         }
     }
 
     @media screen and (max-width: 1020px) {
         .nav-bar {
+            &__guest .guest-alert {
+                display: none;
+            }
             &__container {
                 width: auto;
                 margin: 0;

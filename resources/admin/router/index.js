@@ -16,6 +16,7 @@ import BlogPost from "../views/Blogs";
 import CreateSlug from "../views/StaticPages/CreateSlug"
 import Presets from "../views/Presets";
 import SocialLinks from "../views/SocialLinks";
+import GuestSettings from "../views/GuestSettings";
 
 Vue.use(VueRouter);
 
@@ -71,6 +72,11 @@ const routes = [
                 name: 'admin.content.links',
                 path: '/admin/content/links',
                 component: SocialLinks,
+            },
+            {
+                name: 'admin.guest',
+                path: '/admin/guest',
+                component: GuestSettings,
             },
             {
                 name: 'admin.content.static-page',

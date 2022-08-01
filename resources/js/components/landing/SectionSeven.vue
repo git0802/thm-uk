@@ -23,7 +23,7 @@
                     <div class="section__caption__description">
                         {{ site_content[1].description }}
                     </div>
-                    <router-link :to="{name: 'SignUp'}">
+                    <router-link :to="{name: 'GroceryStore'}">
                         <button-base class="btn__w--240 signup-free-btn" :text="'CREATE A FREE MEAL PLAN'"/>
                     </router-link>
                 </div>

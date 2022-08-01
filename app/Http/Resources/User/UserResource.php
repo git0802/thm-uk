@@ -34,6 +34,7 @@ class UserResource extends JsonResource
             'is_spam_wanted' => $this->is_spam_wanted,
             'my_dishes_id'   => $this->stores->first()->id,
             'goal'           => $this->goal,
+            'height_in_feet' => $this->height_in_feet,
         ];
         if ($this->is_admin) {
             $result['is_admin'] = true;

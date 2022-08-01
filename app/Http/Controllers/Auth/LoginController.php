@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\User\UserResource;
 use App\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -24,6 +25,10 @@ class LoginController extends Controller
      */
     public function __invoke(LoginRequest $request)
     {
+        if (Auth::guard('sanctum')->check() && Auth::guard('sanctum')->user()->is_guest) {
+            auth()->logout();
+        }
+
         $user = User::email($request->get('email'))->first();
 
         if (!Hash::check($request->get('password'), $user->password)) {

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Relationships\BelongsTo\Product;
 use App\Relationships\BelongsTo\Planner;
+use Illuminate\Support\Facades\Auth;
 
 class Meal extends Model
 {
@@ -37,6 +38,19 @@ class Meal extends Model
         'product_data'
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $settings = Setting::where('name', 'guest')->first();
+        if ($settings) {
+            $guestSettings = $settings->settings_json;
+
+            if ($guestSettings['enabled'] && Auth::guard('sanctum')->check() && Auth::guard('sanctum')->user()->is_guest) {
+                $this->setTable('guest_'.$this->getTable());
+            }
+        }
+    }
 
     public function product()
     {

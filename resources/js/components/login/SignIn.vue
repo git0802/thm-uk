@@ -104,7 +104,7 @@ export default {
         }
     },
     beforeCreate() {
-        if(this.$store.state.auth.authenticated) {
+        if(this.$store.state.auth.authenticated && !this.$store.state.auth.guest) {
             window.location = '/'
         }
     },

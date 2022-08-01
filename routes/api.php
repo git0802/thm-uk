@@ -6,13 +6,20 @@ use App\Planner;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+Route::prefix('guest')->group(static function () {
+    Route::get('login', 'GuestController@login');
+    Route::get('settings', 'GuestController@settings');
+    Route::post('settings/update', 'GuestController@updateSettings');
+});
+
+
 Route::get('check', static function () {
     return response([
         'authenticated' => Auth::guard('sanctum')->check(),
         'user'          => Auth::guard('sanctum')->user()
             ? UserResource::make(Auth::guard('sanctum')->user())
             : null,
-        'subscription' => Auth::guard('sanctum')->user()->subscription ? Auth::guard('sanctum')->user()->subscription->subscriptionPlan : null,
+        'subscription' => Auth::guard('sanctum')->check() ? (Auth::guard('sanctum')->user()->subscription ? Auth::guard('sanctum')->user()->subscription->subscriptionPlan : null) : null,
     ]);
 });
 

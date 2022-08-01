@@ -10,7 +10,13 @@
             />
 
         </div>
-        <button-add-new-store
+        <button-add-new-store v-if="$store.state.auth.guest"
+            @click="actionsModal({
+                name: 'modalRegister',
+                action: 'open'
+            })"
+        />
+        <button-add-new-store v-else
             @click="actionsModal({
                 name: 'modalStore',
                 action: 'open'

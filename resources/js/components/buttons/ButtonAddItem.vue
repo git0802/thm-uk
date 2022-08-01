@@ -1,5 +1,11 @@
 <template>
-    <div class="add-item"
+    <div class="add-item" v-if="$store.state.auth.guest" @click="actionsModal({
+                name: 'modalRegister',
+                action: 'open'
+            })">
+        {{ title }}<icon-add-item/>
+    </div>
+    <div class="add-item" v-else
         @click="$emit('click')"
     >
         {{ title }}<icon-add-item/>
@@ -8,6 +14,7 @@
 
 <script>
 import IconAddItem from "../svg/IconAddItem";
+import {mapActions} from "vuex";
     export default {
         name: "ButtonAddItem",
         components: {
@@ -19,7 +26,12 @@ import IconAddItem from "../svg/IconAddItem";
                 required: true,
                 default: 'Add item'
             }
-        }
+        },
+      methods: {
+        ...mapActions({
+          actionsModal: 'modals/actionsModal',
+        }),
+      }
     }
 </script>
 
