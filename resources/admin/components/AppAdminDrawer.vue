@@ -96,6 +96,7 @@
                     { icon: 'mdi-file-table', text: 'Stores', to: 'admin.stores' },
                     { icon: 'mdi-content-copy', text: 'Presets', to: 'admin.presets' },
                     { icon: 'mdi-ticket-percent', text: 'Coupon', to: 'admin.coupons' },
+                    { icon: 'mdi-account', text: 'Guest Settings', to: 'admin.guest' },
                     {
                         icon: 'mdi-chevron-up',
                         'icon-alt': 'mdi-chevron-down',

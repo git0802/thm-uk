@@ -14,7 +14,7 @@
 <!--                    </div>-->
                 </div>
                 <div class="button-caption">
-                    <router-link :to="{name: 'SignUp'}">
+                    <router-link :to="{name: 'GroceryStore'}">
                         <button-base class="btn__w--240 signup-free-btn" :text="'CREATE A FREE MEAL PLAN'" :style="{'z-index': 2}"/>
                     </router-link>
                 </div>

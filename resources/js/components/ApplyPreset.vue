@@ -1,11 +1,18 @@
 <template>
-    <div class="preset-apply"  v-if="preset">
+    <div class="preset-apply"  v-if="$store.state.auth.guest" >
+        <button-base :text="'AUTO-FILL FOODS FROM THIS STORE!'" :styles="{'padding': '8px 0 8px 0', 'max-width': '20em'}" @click="actionsModal({
+                name: 'modalRegister',
+                action: 'open'
+            })" />
+    </div>
+    <div class="preset-apply"  v-else-if="preset" >
         <button-base :text="'AUTO-FILL FOODS FROM THIS STORE!'" :styles="{'padding': '8px 0 8px 0', 'max-width': '20em'}" @click="applyPreset" />
     </div>
 </template>
 
 <script>
 import ButtonBase from "./buttons/ButtonBase";
+import {mapActions} from "vuex";
 export default {
     name: "ApplyPreset",
     components: {ButtonBase},
@@ -129,7 +136,10 @@ export default {
                 }
             }
             this.$emit('loading', false)
-        }
+        },
+        ...mapActions({
+          actionsModal: 'modals/actionsModal',
+        }),
     }
 
 }

@@ -15,7 +15,7 @@
                 <icon-female/>
             </div>
         </div>
-        <input
+        <input v-if="!$store.state.auth.guest"
             ref="fileInput"
             type="file"
             @change="onFileChange"

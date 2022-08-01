@@ -13,6 +13,7 @@
             }
         },
         created() {
+            this.$store.dispatch('auth/checkGuest', {route: this.$route, http: this.$http});
             this.$store.dispatch('info/getPrice');
             this.$store.dispatch('loader/loading', false)
         },

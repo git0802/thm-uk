@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const state = {
     authenticated: false,
+    guest: false,
     token: '',
     user: null,
     subscriptionPlan: null,
@@ -10,6 +11,9 @@ const state = {
 };
 
 const getters = {
+    guest: (state) => {
+        return state.guest;
+    },
     authenticated: (state) => {
         return state.authenticated;
     },
@@ -50,7 +54,44 @@ const actions = {
         commit('adminUi/setIsLoading', false, {root: true})
 
     },
+    async checkGuest({ dispatch, state }, { route, http }) {
+        if (state.guest && route.name !== 'GroceryStore') {
+            await dispatch('signOutGuest', { http: http });
+        }
+    },
+    async signInGuest({dispatch, state, commit}, { http }) {
+        if (!state.authenticated || state.token === "") {
+            Cookies.set('guest', true, { expires: 30 });
+            await axios.get("/api/guest/login").then(({data}) => {
+                if (data.success) {
+                    commit('setSubscriptionStatus', data.subscription);
+                    Cookies.set('token', data.token, {expires: 30});
+                    http.defaults.headers.common['Authorization'] = "Bearer " + data.token;
+                    commit('login', data.token);
+                    commit('user', data.user);
+                    commit('guest', true);
+                } else {
+                    Cookies.remove('guest');
+                    window.location = '/login';
+                }
+            });
+        }
+        return true;
+    },
+    async signOutGuest({dispatch, state, commit}, { http }) {
+        if (state.authenticated) {
+            await http.post('/api/logout')
+        }
+        await Cookies.remove('token');
+        http.defaults.headers.common['Authorization'] = "";
+        await commit('logout');
+        // await dispatch('stores/clearChoosedStores', null, { root: true });
+        Cookies.remove('guest');
+        commit('guest', false);
+        return true;
+    },
     async signIn({ dispatch, commit }, { http, token, user }) {
+        Cookies.remove('guest');
         Cookies.set('token', token, { expires: 30 });
         http.defaults.headers.common['Authorization'] = "Bearer " + token;
         await commit('login', token);
@@ -99,6 +140,7 @@ const actions = {
         }
     },
     async authenticate({ commit }, {data, http}) {
+        Cookies.remove('guest');
         return await http.post('/api/login', {
             email: data.email,
             password: data.password,
@@ -120,6 +162,9 @@ const mutations = {
     user: (state, user) => {
         state.user = user.user;
         state.subscriptionPlan = user.subscription;
+    },
+    guest: (state, guest) => {
+        state.guest = guest;
     },
     userInfo: (state, user) => {
         state.user = user;

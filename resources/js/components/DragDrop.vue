@@ -9,9 +9,14 @@
                     :isCalculate="isCalculate"
                     :weeklyCalories="sumAllCaloriesPerDay()"
                 />
-                <button class="btn-goal" @click="actionsModal({
-                name: 'modalWeeklyGoals',
-                action: 'open'
+                <button class="btn-goal" v-if="$store.state.auth.guest" @click="actionsModal({
+                    name: 'modalRegister',
+                    action: 'open'
+                })">Change your goal
+                </button>
+                <button class="btn-goal" v-else @click="actionsModal({
+                    name: 'modalWeeklyGoals',
+                    action: 'open'
                 })">Change your goal
                 </button>
             </div>

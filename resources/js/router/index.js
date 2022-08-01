@@ -34,7 +34,7 @@ const routes = [
         name: "SignUp",
         component: SignUpCombined,
         beforeEnter(to, from, next) {
-            if (store.getters['auth/authenticated']) {
+            if (store.getters['auth/authenticated'] && !store.getters['auth/guest']) {
                 window.location = '/meal-planner';
             } else {
                 next();
@@ -46,7 +46,7 @@ const routes = [
         name: "Login",
         component: Login,
         beforeEnter(to, from, next) {
-            if (store.getters['auth/authenticated']) {
+            if (store.getters['auth/authenticated'] && !store.getters['auth/guest']) {
                 window.location = '/meal-planner';
             } else {
                 next();
@@ -59,7 +59,7 @@ const routes = [
         component: GroceryStore,
         beforeEnter(to, from, next) {
             if (!store.getters['auth/authenticated']) {
-                next({name: '/login'});
+                store.dispatch('auth/signInGuest', {http: Vue.prototype.$http}).then(r => { next(); });
             } else {
                 let subscriptionStatus = store.dispatch('auth/checkSubscriptionStatus');
                 if(subscriptionStatus == null || subscriptionStatus.is_expired){

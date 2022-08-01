@@ -7,6 +7,7 @@ use App\Relationships\HasMany\Extras;
 use Illuminate\Database\Eloquent\Model;
 use App\Relationships\BelongsTo\User;
 use App\Relationships\HasMany\Meals;
+use Illuminate\Support\Facades\Auth;
 
 class Planner extends Model
 {
@@ -35,6 +36,20 @@ class Planner extends Model
         'validation_data' => 'collection',
         'shopping_list_data' => 'collection',
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $settings = Setting::where('name', 'guest')->first();
+        if ($settings) {
+            $guestSettings = $settings->settings_json;
+
+            if ($guestSettings['enabled'] && Auth::guard('sanctum')->check() && Auth::guard('sanctum')->user()->is_guest) {
+                $this->setTable('guest_'.$this->getTable());
+            }
+        }
+    }
 
     /**
      * Return shopping list data

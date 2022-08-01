@@ -68,6 +68,20 @@ class User extends Authenticatable
         'activated_at' => 'datetime'
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $settings = Setting::where('name', 'guest')->first();
+        if ($settings) {
+            $guestSettings = $settings->settings_json;
+
+            if ($guestSettings['enabled'] && request()->hasCookie('guest')) {
+                $this->setTable('guest_'.$this->getTable());
+            }
+        }
+    }
+
     /**
      * Find user by email.
      *
@@ -92,7 +106,7 @@ class User extends Authenticatable
 
     public function checkPaid()
     {
-        if($this->is_admin) {
+        if($this->is_admin || $this->is_guest) {
             return true;
         } else {
             return (bool) $this->subscription->paid;
@@ -112,4 +126,18 @@ class User extends Authenticatable
             return $array[$this->subscription->paid];
         }
     }
+
+    public function getIsGuestAttribute(): bool
+    {
+        return $this->phone === 'guest';
+    }
+
+    public function getHeightInFeetAttribute(): string
+    {
+        $inches = $this->height / 2.54;
+        $feet = intval($inches / 12);
+        $inches = $inches % 12;
+        return sprintf('%d’%d', $feet, $inches);
+    }
+
 }

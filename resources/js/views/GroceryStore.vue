@@ -1,7 +1,7 @@
 <template>
     <div class="no-copy" id="no-copy" style="overflow: auto;height: 100vh;">
     <app-layout :style="{ 'filter': filterValue }">
-            <main class="grocery-store">
+            <main class="grocery-store" :class="[{'grocery-store__guest-banner': $store.state.auth.guest && this.$route.path === '/store'}]">
                 <stepper
                     v-if="router_path == '/store'"
                     class="steps-container__stepper"
@@ -15,8 +15,8 @@
                             <div class="user-info">
                                 <div class="user-avatar">
                                     <label for="userpic_input">
-                                        <user-pic/>
-                                        <div class="user-avatar__edit">
+                                        <user-pic v-if="user"/>
+                                        <div class="user-avatar__edit" v-if="!$store.state.auth.guest">
                                             <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
                                                  xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -29,7 +29,7 @@
                                         </div>
                                     </label>
                                 </div>
-                                <p>Welcome <span class="purple">{{ user.name }}</span>, now let's set up your meal plan
+                                <p v-if="user">Welcome <span class="purple">{{ user.name }}</span>, now let's set up your meal plan
                                     for the week!</p>
                             </div>
                             <app-caption
@@ -62,7 +62,16 @@
                             :stores="$store.state.stores.stores"
                         />
 
-                        <div class="meal-planner__save">
+                        <div class="meal-planner__save" v-if="$store.state.auth.guest">
+                            <button-base
+                                :text="'NEXT STEP'"
+                                @click="actionsModal({
+                                    name: 'modalRegister',
+                                    action: 'open'
+                                })"
+                            />
+                        </div>
+                        <div class="meal-planner__save" v-else>
                             <button-base
                                 :text="'NEXT STEP'"
                                 @click="nextStep()"
@@ -95,6 +104,7 @@
         <modal-dish/>
         <modal-review-list/>
         <modal-weekly-goals/>
+        <modal-register/>
         <!--Block for all modal windows on grocery store page-->
     </div>
 </template>
@@ -107,10 +117,13 @@ import axios from "axios";
 import {Container} from "vue-smooth-dnd";
 import UserPic from '../../dashboard/components/user/Userpic'
 import DragDrop from "../components/DragDrop";
+import ModalRegister from "../components/modals/ModalRegister/ModalRegister";
+import store from "../../store";
+import Vue from "vue";
 
 
 export default {
-    components: {DragDrop, ModalReviewList, ModalStore, Container, UserPic},
+    components: {ModalRegister, DragDrop, ModalReviewList, ModalStore, Container, UserPic},
     data() {
         return {
             tryToSave: false,
@@ -154,11 +167,14 @@ export default {
         }
     },
     async mounted() {
-        await this.fetchGetInitial()
+        await this.fetchGetInitial();
         this.overrideNavbarStyles()
     },
     beforeDestroy() {
         this.overrideNavbarStyles(true)
+        if (this.$store.getters['auth/guest']) {
+            this.$store.dispatch('auth/signOutGuest', { http: Vue.prototype.$http });
+        }
     },
     methods: {
         checkIsMyDihes() {
@@ -261,8 +277,16 @@ export default {
     background: var(--white);
     min-height: 100vh;
 
+    &__guest-banner {
+        padding-top: 150px;
+    }
+
     @media screen and (max-width: 767px) {
         padding: 90px 20px;
+
+        &__guest-banner {
+          padding-top: 180px;
+        }
     }
 
     &__main {
