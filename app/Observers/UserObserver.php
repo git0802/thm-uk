@@ -15,12 +15,14 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        $store = new Store;
-        $store->owner_id = $user->id;
-        $store->name = 'Grouped Food';
-        $store->save();
-        $store->image()->create([
-            'path' => 'defaults/my-dish.jpg',
-        ]);
+        if (!$user->is_guest) {
+            $store = new Store;
+            $store->owner_id = $user->id;
+            $store->name = 'Grouped Food';
+            $store->save();
+            $store->image()->create([
+                'path' => 'defaults/my-dish.jpg',
+            ]);
+        }
     }
 }
