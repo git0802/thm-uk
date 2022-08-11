@@ -28,6 +28,10 @@ class GuestController extends Controller
                 $user = Auth::guard('sanctum')->user();
             }
 
+            if ($user->updated_at->diffInSeconds(\Carbon\Carbon::now()) > 10) {
+                $user->planners()->delete();
+            }
+
             return response([
                 'success' => Auth::guard('sanctum')->check() && Auth::guard('sanctum')->user()->is_guest,
                 'token' => $user->createToken($request->server('HTTP_USER_AGENT'))->plainTextToken,
@@ -89,5 +93,12 @@ class GuestController extends Controller
             'message' => __('guest.settings.updated'),
             'links'   => $settings->settings_json
         ], 201);
+    }
+
+    public function ping()
+    {
+        if (Auth::guard('sanctum')->check() && Auth::guard('sanctum')->user()->is_guest) {
+            Auth::guard('sanctum')->user()->touch();
+        }
     }
 }

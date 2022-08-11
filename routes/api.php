@@ -10,6 +10,7 @@ Route::prefix('guest')->group(static function () {
     Route::get('login', 'GuestController@login');
     Route::get('settings', 'GuestController@settings');
     Route::post('settings/update', 'GuestController@updateSettings');
+    Route::post('ping', 'GuestController@ping');
 });
 
 

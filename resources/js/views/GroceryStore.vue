@@ -139,7 +139,8 @@ export default {
                 {
                     content: '03',
                 }
-            ]
+            ],
+            guestPinging: null
         }
     },
     computed: {
@@ -174,6 +175,7 @@ export default {
         this.overrideNavbarStyles(true)
         if (this.$store.getters['auth/guest']) {
             this.$store.dispatch('auth/signOutGuest', { http: Vue.prototype.$http });
+            clearInterval(this.guestPinging);
         }
     },
     methods: {
@@ -256,6 +258,16 @@ export default {
         ...mapActions({
             actionsModal: 'modals/actionsModal',
         }),
+        pingGuest() {
+            this.guestPinging = setInterval(() => {
+                axios.post('/api/guest/ping');
+            }, 5000)
+        }
+    },
+    created () {
+        if (this.$store.getters['auth/guest']) {
+            this.pingGuest()
+        }
     }
 }
 </script>
