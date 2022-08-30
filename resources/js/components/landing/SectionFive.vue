@@ -15,7 +15,7 @@
                     {{ site_content[2].description }}
                 </div>
                 <div class="works-section__content__button">
-                    <router-link :to="{name: 'SignUp'}">
+                    <router-link :to="{name: 'GroceryStore'}">
                         <button-base class="btn__w--240" :text="'GET STARTED FREE'"/>
                     </router-link>
                 </div>
