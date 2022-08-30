@@ -55,9 +55,12 @@
                                 Log in
                             </router-link>
 
-                            <router-link class="auth__item auth__signup" :active-class="'auth__item--active'" :to="{name: 'GroceryStore'}" @click.native="close()" exact>
+                            <router-link v-if="this.$route.path === '/'" class="auth__item auth__signup" :active-class="'auth__item--active'" :to="{name: 'GroceryStore'}" @click.native="close()" exact>
                                 GET FREE MEAL PLAN
                             </router-link>
+                            <router-link v-else class="auth__item auth__signup" :active-class="'auth__item--active'" :to="{name: 'SignUp'}" @click.native="close()" exact>
+                                GET FREE MEAL PLAN
+                            </router-link
                         </div>
                     </div>
 
