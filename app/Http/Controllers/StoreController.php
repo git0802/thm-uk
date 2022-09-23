@@ -54,7 +54,6 @@ class StoreController extends Controller
     public function all(): AnonymousResourceCollection
     {
         return StoreResource::collection(
-            Auth::guard('sanctum')->check() && Auth::guard('sanctum')->user()->is_guest ? [] :
             Store::byOwnerId($this->id(), $this->getUser()->stores->first()->id)->orderBy('owner_id', 'DESC')->orderByRaw('LOWER(name)')->get()
         );
     }
