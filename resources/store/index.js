@@ -48,7 +48,7 @@ export default new Vuex.Store({
     strict: debug,
     plugins: [createPersistedState({
         paths: [
-            'ui.right_drawer', 'auth',  'stores.choosedStores', 'publicUi.gdpr', 'stores.selectedStore'
+            'ui.right_drawer', 'auth',  'stores.choosedStores', 'publicUi.gdpr', 'publicUi.pwa', 'publicUi.pwa_support', 'stores.selectedStore'
         ],
         key: "thehotmeal"
     })]

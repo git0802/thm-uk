@@ -29,6 +29,10 @@
     @include('includes.ga')
     @include('facebook-pixel::head')
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- PWA  -->
+    <meta name="theme-color" content="#6777ef"/>
+    <link rel="apple-touch-icon" href="/icons/android-icon-192x192-dunplab-manifest-15727.png">
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
 </head>
 <body>
 @include('includes.gtm-body')
@@ -39,5 +43,13 @@
 
 </div>
 @include('includes.statcounter')
+<script src="{{ asset('/sw.js') }}"></script>
+<script>
+    if (!navigator.serviceWorker.controller) {
+        navigator.serviceWorker.register("/sw.js").then(function (reg) {
+            console.log("Service worker has been registered for scope: " + reg.scope);
+        });
+    }
+</script>
 </body>
 </html>

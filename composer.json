@@ -15,6 +15,7 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
+        "ladumor/laravel-pwa": "^0.0.3",
         "laravel/framework": "^7.0",
         "laravel/sanctum": "^2.4",
         "laravel/tinker": "^2.0",

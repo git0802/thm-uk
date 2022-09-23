@@ -34,9 +34,6 @@
                             <a class="links__item" :active-class="'links__item--active'"  @click="anchor({name: 'Landing', hash: '#benefits'})">
                                 Benefits
                             </a>
-                            <a class="links__item" href="https://blog.thehotmeal.com">
-                                Blog
-                            </a>
                         </ul>
                     </div>
                     <div class="login-block">

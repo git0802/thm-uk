@@ -19,6 +19,7 @@ use App\Helpers\UserHelper;
 use App\Helpers\ImageHelper;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use League\Csv\AbstractCsv;
 use League\Csv\Exception;
@@ -53,6 +54,7 @@ class StoreController extends Controller
     public function all(): AnonymousResourceCollection
     {
         return StoreResource::collection(
+            Auth::guard('sanctum')->check() && Auth::guard('sanctum')->user()->is_guest ? [] :
             Store::byOwnerId($this->id(), $this->getUser()->stores->first()->id)->orderBy('owner_id', 'DESC')->orderByRaw('LOWER(name)')->get()
         );
     }

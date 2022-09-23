@@ -4,6 +4,7 @@
         <slot/>
         <app-footer v-if="!hideFooter"/>
         <g-d-p-r/>
+        <p-w-a/>
         <notifications group="planner" classes="n-light" position="bottom right"/>
 
     </div>
@@ -12,10 +13,11 @@
 <script>
     import {mapActions} from "vuex";
     import GDPR from "../GDPR";
+    import PWA from "../PWA";
 
     export default {
         name: "AppLayout",
-        components: {GDPR},
+        components: {GDPR, PWA},
         props: {
             hideFooter: {
                 type: Boolean,

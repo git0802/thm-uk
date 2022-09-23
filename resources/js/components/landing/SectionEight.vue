@@ -25,7 +25,7 @@
                         <img src="assets/images/client1.png" alt="Success Client Image" />
                     </div>
                     <div class="success-block-hero-title">
-                        <span>Ngozi O.</span>
+                        <span>Ayesha W.</span>
                     </div>
                     <div class="success-block-hero-quote">
                         <img class="success-block-hero-quote-top" src="assets/images/top-quote.png" alt="Top Quote Mark" />
@@ -61,7 +61,7 @@
             <div class="success-block">
                 <div class="success-block-hero">
                     <div class="success-block-hero-image">
-                        <img src="assets/images/client2.png" alt="Success Client Image" />
+                        <img src="assets/images/client2.jpg" alt="Success Client Image" />
                     </div>
                     <div class="success-block-hero-title">
                         <span>Kate Edelman</span>
@@ -83,7 +83,7 @@
                             <span>Our Meal Planner</span>
                         </div>
                         <div class="success-block-content-image">
-                            <img src="assets/images/client2-without-meal.png" alt="Without Meal Planner" />
+                            <img src="assets/images/client2-without-meal.jpg" alt="Without Meal Planner" />
                         </div>
                     </div>
                     <div>
@@ -92,7 +92,7 @@
                             <span>Our Meal Planner</span>
                         </div>
                         <div class="success-block-content-image">
-                            <img src="assets/images/client2-with-meal.png" alt="With Meal Planner" />
+                            <img src="assets/images/client2-with-meal.jpg" alt="With Meal Planner" />
                         </div>
                     </div>
                 </div>
@@ -226,7 +226,7 @@
         position: absolute;
     }
 
-    
+
     @media screen and (min-width: 981px) {
         .star1 {
             top: 140px;
@@ -253,8 +253,8 @@
 
             &-hero {
                 padding: 20px;
-                
-                &-quote-top, 
+
+                &-quote-top,
                 &-quote-bottom {
                     display: none;
                 }
