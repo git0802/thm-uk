@@ -25,9 +25,6 @@
                             <a class="links__item" :active-class="'links__item--active'"  @click="anchor({name: 'Landing', hash: '#howitworks'})">
                                 {{ site_content[1].block_name }}
                             </a>
-                            <a class="links__item" :active-class="'links__item--active'" href="/about">
-                                About us
-                            </a>
                             <a class="links__item" :active-class="'links__item--active'"  @click="anchor({name: 'Landing', hash: '#whyitworks'})">
                                 {{ site_content[2].block_name }}
                             </a>
