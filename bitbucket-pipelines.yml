@@ -15,8 +15,6 @@ pipelines:
             - bash nodesource_setup.sh
             - apt-get install -qy nodejs
             - node -v
-            - php artisan config:clear
-            - php artisan cache:clear
             - composer install
             - npm install
             # - npm lint
